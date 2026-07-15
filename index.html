@@ -4,7 +4,78 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0f">
-<title>Thunder Trade - Trading Data Analyzer</title>
+<title>Thunder Trade - Analisa Data Trading Forex MT4/MT5 & Copy Signal TradersFamily</title>
+
+<!-- ===== SEO Meta Tags ===== -->
+<meta name="description" content="Thunder Trade adalah analyzer trading forex gratis untuk statement MT4/MT5: cek win rate, profit factor, equity curve, drawdown, dan Portfolio Score otomatis. Partner afiliasi resmi TradersFamily untuk daftar copy signal forex terpercaya.">
+<meta name="keywords" content="trading forex, traders family, tradersfamily, copy signal forex, copy trading forex, analisa trading forex, analisa MT4, analisa MT5, statement MT4 MT5, win rate forex, profit factor, equity curve trading, portfolio score trading, signal forex, robot trading forex, evaluasi akun trading, thunder trade">
+<meta name="author" content="Thunder Trade">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="googlebot" content="index, follow">
+<meta name="language" content="Indonesian">
+<link rel="canonical" href="https://thundertrade.space/">
+
+<!-- ===== Open Graph / Facebook ===== -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thundertrade.space/">
+<meta property="og:site_name" content="Thunder Trade">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Thunder Trade - Analisa Data Trading Forex MT4/MT5 & Copy Signal TradersFamily">
+<meta property="og:description" content="Upload statement MT4/MT5 dan dapatkan analisa trading forex lengkap: win rate, profit factor, equity curve, hingga skor portfolio otomatis. Daftar copy signal forex bersama partner resmi TradersFamily.">
+<meta property="og:image" content="https://thundertrade.space/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- ===== Twitter Card ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Thunder Trade - Analisa Data Trading Forex MT4/MT5 & Copy Signal TradersFamily">
+<meta name="twitter:description" content="Analisa trading forex MT4/MT5 gratis: win rate, profit factor, equity curve, dan skor portfolio otomatis. Partner afiliasi resmi TradersFamily untuk copy signal forex.">
+<meta name="twitter:image" content="https://thundertrade.space/og-image.png">
+
+<!-- ===== Structured Data (JSON-LD) ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Thunder Trade",
+  "alternateName": "Thunder Trade Analyzer",
+  "url": "https://thundertrade.space/",
+  "description": "Analyzer trading forex gratis untuk statement MT4/MT5: win rate, profit factor, equity curve, drawdown, dan Portfolio Score otomatis. Partner afiliasi resmi TradersFamily untuk copy signal forex.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "IDR"
+  },
+  "inLanguage": "id-ID",
+  "about": {
+    "@type": "Thing",
+    "name": "Analisa Trading Forex MT4 MT5"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Thunder Trade - Analisa Trading Forex",
+      "item": "https://thundertrade.space/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Daftar Copy Signal TradersFamily",
+      "item": "https://thundertrade.space/#daftar-copy-signal"
+    }
+  ]
+}
+</script>
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23eab308'/%3E%3Cstop offset='50%25' stop-color='%23fbbf24'/%3E%3Cstop offset='100%25' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0f'/%3E%3Cpolygon points='58,10 24,56 46,56 40,90 78,42 54,42' fill='url(%23g)'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -377,11 +448,12 @@
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 32px;
     margin-bottom: 8px;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-card);
   }
   .score-section::before {
     content: '';
@@ -481,10 +553,245 @@
     color: var(--text-tertiary);
   }
   .risk-note b { color: var(--text-secondary); }
+
+  /* ===== Thunder AI ===== */
+  .ai-insight-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 30px 34px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .ai-insight-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #eab308, #a855f7, #3b82f6, transparent);
+    opacity: 0.75;
+  }
+  .ai-insight-section::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.16) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .ai-insight-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .ai-insight-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #eab308, #a855f7 55%, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.5);
+    position: relative;
+    animation: aiIconGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes aiIconGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(168, 85, 247, 0.45); }
+    50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.7), 0 0 44px rgba(234, 179, 8, 0.25); }
+  }
+  .ai-insight-icon .ai-icon-svg {
+    display: block;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+  }
+  .ai-insight-icon .ai-dot {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #00ff88;
+    box-shadow: 0 0 8px #00ff88, 0 0 16px rgba(0, 255, 136, 0.6);
+    animation: neonFlicker 1.5s ease-in-out infinite;
+  }
+  .ai-insight-title-wrap { flex: 1; min-width: 160px; padding-top: 2px; }
+  .ai-insight-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ai-insight-title .ai-badge-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: rgba(168, 85, 247, 0.16);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+  }
+  .ai-insight-sub { font-size: 12px; color: var(--text-faint); margin-top: 4px; }
+  .ai-insight-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--vc, #3b82f6) 16%, transparent);
+    color: var(--vc, #3b82f6);
+    border: 1px solid color-mix(in srgb, var(--vc, #3b82f6) 45%, transparent);
+    flex-shrink: 0;
+  }
+  .ai-insight-verdict::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--vc, #3b82f6);
+    box-shadow: 0 0 6px var(--vc, #3b82f6);
+  }
+  .ai-insight-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .ai-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    background: color-mix(in srgb, var(--cc, #3b82f6) 10%, var(--card-bg-soft));
+    border: 1px solid color-mix(in srgb, var(--cc, #3b82f6) 30%, var(--border));
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .ai-chip b { color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  .ai-insight-summary {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 0 0 24px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--border-faint);
+  }
+  .ai-insight-summary b { color: var(--text-primary); }
+  .ai-insight-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .ai-insight-col {
+    background: var(--card-bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .ai-insight-col::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--ic, #3b82f6);
+    opacity: 0.8;
+  }
+  .ai-insight-col:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--ic, #3b82f6) 45%, var(--border));
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+  }
+  .ai-insight-col--strength { --ic: #00ff88; }
+  .ai-insight-col--watch { --ic: #f97316; }
+  .ai-insight-col--action { --ic: #3b82f6; }
+  .ai-insight-col-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    color: var(--ic, #3b82f6);
+  }
+  .ai-insight-col-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    background: color-mix(in srgb, var(--ic, #3b82f6) 18%, transparent);
+    flex-shrink: 0;
+  }
+  .ai-insight-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ai-insight-list li {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-tertiary);
+    padding-left: 16px;
+    position: relative;
+  }
+  .ai-insight-list li::before {
+    content: '●';
+    position: absolute;
+    left: 0; top: 1px;
+    font-size: 8px;
+    color: var(--ic, #3b82f6);
+  }
+  .ai-insight-list .ai-insight-empty { color: var(--text-faint); font-style: italic; padding-left: 0; }
+  .ai-insight-list .ai-insight-empty::before { content: none; }
+  .ai-insight-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--text-faint);
+  }
+  @media (max-width: 780px) {
+    .ai-insight-columns { grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px) {
     .score-section { grid-template-columns: 1fr; padding: 26px 20px; }
     .score-left { padding-right: 0; padding-bottom: 24px; border-right: none; border-bottom: 1px solid var(--border); }
     .score-breakdown { grid-template-columns: 1fr; }
+    .ai-insight-section { padding: 24px 18px; }
+    .ai-insight-verdict { margin-left: 62px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ai-insight-icon { animation: none; }
   }
   #loadingBox {
     display: none;
@@ -586,7 +893,8 @@
     background: var(--card-bg-soft);
     border-left: 3px solid var(--border-hover);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-card);
     position: relative;
   }
   .account-line b { color: #3b82f6; font-weight: 600; }
@@ -626,13 +934,15 @@
   .stat-item {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 16px;
+    box-shadow: var(--shadow-card);
     transition: all 0.3s;
   }
   .stat-item:hover {
     border-color: var(--border-strong);
     background: var(--border-faint);
+    transform: translateY(-2px);
   }
   .stat-label {
     font-size: 10px;
@@ -704,25 +1014,97 @@
     transform: translateY(-50%);
     width: 3px;
     height: 16px;
-    background: linear-gradient(180deg, #3b82f6 0%, #06b6d4 100%);
+    background: linear-gradient(180deg, var(--gc, #3b82f6) 0%, #06b6d4 100%);
     border-radius: 2px;
     box-shadow: 0 0 10px var(--border-hover);
+  }
+  .dashboard-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .dashboard-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    background: var(--card-bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .dashboard-nav-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+  }
+  .dashboard-nav-btn.active {
+    color: var(--text-primary);
+    background: var(--border);
+    border-color: var(--border-hover);
+    box-shadow: 0 0 12px var(--border-faint);
+  }
+  .dashboard-group {
+    margin-top: 46px;
+    scroll-margin-top: 20px;
+  }
+  .dashboard-group:first-of-type {
+    margin-top: 0;
+  }
+  .dashboard-group-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dg-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gc, #3b82f6);
+    background: color-mix(in srgb, var(--gc, #3b82f6) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--gc, #3b82f6) 38%, transparent);
+    padding: 5px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
+  }
+  .dg-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .dg-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 2px 0 0;
   }
   .chart-box {
     position: relative;
     height: 280px;
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     transition: all 0.3s;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
     margin-bottom: 16px;
   }
   .chart-box:hover {
     border-color: var(--border-hover);
-    background: var(--border);
-    box-shadow: inset 0 0 60px var(--border), 0 12px 40px var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .chart-box canvas { position: relative; z-index: 1; }
   .chart-box-equity { cursor: grab; }
@@ -831,10 +1213,15 @@
   .calendar-box {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
     margin-bottom: 16px;
+    transition: all 0.3s;
+  }
+  .calendar-box:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .calendar-summary {
     display: grid;
@@ -850,7 +1237,9 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    transition: transform 0.25s ease, border-color 0.25s ease;
   }
+  .cal-summary-item:hover { transform: translateY(-2px); border-color: var(--border-hover); }
   .cal-summary-label {
     font-size: 10px;
     color: var(--text-muted);
@@ -959,14 +1348,14 @@
     height: 160px;
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 12px;
     transition: all 0.3s;
-    box-shadow: inset 0 0 20px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 20px var(--border-faint);
   }
   .mini-chart-box:hover {
     border-color: var(--border-hover);
-    background: var(--border);
+    transform: translateY(-3px);
   }
   .mini-chart-box canvas { position: relative; z-index: 1; }
   .legend {
@@ -983,15 +1372,16 @@
   .summary-box {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     margin-top: 0;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
+    transition: all 0.3s;
   }
   .summary-box:hover {
     border-color: var(--border-hover);
-    background: var(--border);
-    box-shadow: inset 0 0 60px var(--border), 0 12px 40px var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .summary-row {
     display: grid;
@@ -1015,15 +1405,16 @@
   .consecutive-container {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     margin-top: 0;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
+    transition: all 0.3s;
   }
   .consecutive-container:hover {
     border-color: var(--border-hover);
-    background: var(--border);
-    box-shadow: inset 0 0 60px var(--border), 0 12px 40px var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .consecutive-grid {
     display: grid;
@@ -1033,17 +1424,19 @@
   .consecutive-item {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px;
+    box-shadow: var(--shadow-card);
     transition: all 0.3s;
     border-left: 4px solid;
   }
   .consecutive-item:hover {
     border-color: var(--border-strong);
     background: var(--border-faint);
+    transform: translateY(-2px);
   }
-  .consecutive-item.win { border-left-color: #00ff88; box-shadow: inset -2px 0 10px rgba(0, 255, 136, 0.1); }
-  .consecutive-item.loss { border-left-color: #ff3366; box-shadow: inset -2px 0 10px rgba(255, 51, 102, 0.1); }
+  .consecutive-item.win { border-left-color: #00ff88; box-shadow: var(--shadow-card), inset -2px 0 10px rgba(0, 255, 136, 0.1); }
+  .consecutive-item.loss { border-left-color: #ff3366; box-shadow: var(--shadow-card), inset -2px 0 10px rgba(255, 51, 102, 0.1); }
   .consecutive-label {
     font-size: 11px;
     color: var(--text-muted);
@@ -1071,15 +1464,16 @@
   .recent-trades-container {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     margin-top: 0;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
+    transition: all 0.3s;
   }
   .recent-trades-container:hover {
     border-color: var(--border-hover);
-    background: var(--border);
-    box-shadow: inset 0 0 60px var(--border), 0 12px 40px var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .trade-table {
     width: 100%;
@@ -1144,15 +1538,16 @@
   .debug-container {
     background: var(--card-bg-soft);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px;
     margin-top: 0;
-    box-shadow: inset 0 0 40px var(--border-faint);
+    box-shadow: var(--shadow-card), inset 0 0 40px var(--border-faint);
+    transition: all 0.3s;
   }
   .debug-container:hover {
     border-color: var(--border-hover);
-    background: var(--border);
-    box-shadow: inset 0 0 60px var(--border), 0 12px 40px var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card), inset 0 0 60px var(--border);
   }
   .debug-header {
     display: flex;
@@ -1245,6 +1640,54 @@
     color: var(--text-muted);
     margin: 0;
   }
+  .features-featured {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .feature-card--featured {
+    padding: 24px 22px;
+  }
+  .feature-card--featured .f-icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  .feature-card--featured .f-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .feature-card--featured .f-desc {
+    font-size: 13px;
+  }
+  .feature-group {
+    margin-bottom: 30px;
+  }
+  .feature-group:last-child {
+    margin-bottom: 0;
+  }
+  .feature-group-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--gc, #3b82f6);
+    margin-bottom: 14px;
+  }
+  .feature-group-label .fg-icon {
+    font-size: 13px;
+    filter: drop-shadow(0 0 6px var(--gc, #3b82f6));
+  }
+  .feature-group-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gc, #3b82f6), transparent);
+    opacity: 0.4;
+  }
   .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -1254,11 +1697,12 @@
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 20px 18px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--shadow-card);
   }
   .feature-card::before {
     content: '';
@@ -1327,6 +1771,39 @@
   @keyframes soonPulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  .new-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.14);
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    padding: 4px 9px;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+  .new-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c084fc;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.9);
+    animation: soonPulse 1.6s ease-in-out infinite;
+  }
+  .feature-card--ai {
+    border-color: var(--border-strong);
+    background: linear-gradient(160deg, rgba(168, 85, 247, 0.09), var(--card-bg) 60%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .new-badge::before { animation: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .soon-badge::before { animation: none; }
@@ -2087,6 +2564,10 @@
     </div>
   </div>
 
+  <p style="max-width:640px;margin:0 auto 18px;padding:0 16px;text-align:center;font-size:13.5px;line-height:1.6;color:var(--text-tertiary)">
+    Thunder Trade adalah analyzer <strong>trading forex</strong> gratis untuk statement MT4/MT5 — cek win rate, profit factor, dan equity curve akun Anda secara otomatis. Ingin copy signal forex? Daftar lewat partner afiliasi resmi <strong>TradersFamily</strong> di atas.
+  </p>
+
   <div id="dropzone">
     <div class="icon">⚡</div>
     <div class="main">Klik atau drag & drop file</div>
@@ -2113,77 +2594,107 @@
       <h2>Apa yang akan Anda dapatkan</h2>
       <p>Upload statement MT4/MT5, dan dashboard lengkap ini akan langsung tersaji secara otomatis</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card feature-card--soon" style="--fc:#22d3ee">
+    <div class="features-featured">
+      <div class="feature-card feature-card--ai feature-card--featured" style="--fc:#a855f7">
+        <span class="new-badge">Baru</span>
+        <div class="f-icon">⚡</div>
+        <div class="f-title">Thunder AI</div>
+        <div class="f-desc">Evaluasi kilat dari AI: kekuatan, hal yang perlu diwaspadai, dan rekomendasi singkat untuk akun Anda</div>
+      </div>
+      <div class="feature-card feature-card--soon feature-card--featured" style="--fc:#22d3ee">
         <span class="soon-badge">Segera Hadir</span>
         <div class="f-icon">🔌</div>
         <div class="f-title">Integrasi Langsung MT4/MT5</div>
         <div class="f-desc">Hubungkan akun trading Anda langsung — data tersinkron otomatis tanpa perlu upload file statement secara manual</div>
       </div>
-      <div class="feature-card" style="--fc:#00ff88">
-        <div class="f-icon">🏆</div>
-        <div class="f-title">Portfolio Score</div>
-        <div class="f-desc">Skor 0-100 dari 5 indikator: win rate, profit factor, risk:reward, drawdown, recovery factor</div>
+    </div>
+
+    <div class="feature-group" style="--gc:#3b82f6">
+      <div class="feature-group-label"><span class="fg-icon">📊</span> Analisis Performa</div>
+      <div class="features-grid">
+        <div class="feature-card" style="--fc:#00ff88">
+          <div class="f-icon">🏆</div>
+          <div class="f-title">Portfolio Score</div>
+          <div class="f-desc">Skor 0-100 dari 5 indikator: win rate, profit factor, risk:reward, drawdown, recovery factor</div>
+        </div>
+        <div class="feature-card" style="--fc:#3b82f6">
+          <div class="f-icon">🎯</div>
+          <div class="f-title">Win Rate & Profit Factor</div>
+          <div class="f-desc">Statistik performa lengkap: R:R, avg win/loss, max drawdown</div>
+        </div>
+        <div class="feature-card" style="--fc:#eab308">
+          <div class="f-icon">📈</div>
+          <div class="f-title">Equity Curve</div>
+          <div class="f-desc">Grafik pertumbuhan saldo mulai dari deposit awal</div>
+        </div>
+        <div class="feature-card" style="--fc:#00ff88">
+          <div class="f-icon">🔥</div>
+          <div class="f-title">Win/Loss Streak</div>
+          <div class="f-desc">Lacak rentetan kemenangan & kekalahan beruntun</div>
+        </div>
+        <div class="feature-card" style="--fc:#14b8a6">
+          <div class="f-icon">⚖️</div>
+          <div class="f-title">Win vs Loss</div>
+          <div class="f-desc">Perbandingan visual jumlah transaksi menang dan kalah dalam bentuk diagram</div>
+        </div>
       </div>
-      <div class="feature-card" style="--fc:#f97316">
-        <div class="f-icon">🛡️</div>
-        <div class="f-title">Proteksi Risiko Likuidasi</div>
-        <div class="f-desc">Estimasi seberapa dekat akun Anda dengan margin call & stop out berdasarkan riwayat loss streak</div>
+    </div>
+
+    <div class="feature-group" style="--gc:#f97316">
+      <div class="feature-group-label"><span class="fg-icon">🛡️</span> Manajemen Risiko & Dana</div>
+      <div class="features-grid">
+        <div class="feature-card" style="--fc:#f97316">
+          <div class="f-icon">🛡️</div>
+          <div class="f-title">Proteksi Risiko Likuidasi</div>
+          <div class="f-desc">Estimasi seberapa dekat akun Anda dengan margin call & stop out berdasarkan riwayat loss streak</div>
+        </div>
+        <div class="feature-card" style="--fc:#06b6d4">
+          <div class="f-icon">💰</div>
+          <div class="f-title">Deposit, Withdrawal & ROI</div>
+          <div class="f-desc">Ringkasan dana masuk-keluar dan return on investment</div>
+        </div>
       </div>
-      <div class="feature-card" style="--fc:#eab308">
-        <div class="f-icon">📈</div>
-        <div class="f-title">Equity Curve</div>
-        <div class="f-desc">Grafik pertumbuhan saldo mulai dari deposit awal</div>
+    </div>
+
+    <div class="feature-group" style="--gc:#14b8a6">
+      <div class="feature-group-label"><span class="fg-icon">🗂️</span> Rincian & Riwayat Transaksi</div>
+      <div class="features-grid">
+        <div class="feature-card" style="--fc:#f59e0b">
+          <div class="f-icon">📊</div>
+          <div class="f-title">P/L per Instrumen</div>
+          <div class="f-desc">Breakdown profit/loss berdasarkan symbol trading</div>
+        </div>
+        <div class="feature-card" style="--fc:#a855f7">
+          <div class="f-icon">📅</div>
+          <div class="f-title">P/L per Bulan & Minggu</div>
+          <div class="f-desc">Pantau tren performa mingguan dan bulanan</div>
+        </div>
+        <div class="feature-card" style="--fc:#22d3ee">
+          <div class="f-icon">🗓️</div>
+          <div class="f-title">Kalender P/L</div>
+          <div class="f-desc">Lihat profit/loss harian dalam tampilan kalender, navigasi antar bulan</div>
+        </div>
+        <div class="feature-card" style="--fc:#ff3366">
+          <div class="f-icon">📋</div>
+          <div class="f-title">Riwayat Trade</div>
+          <div class="f-desc">Daftar transaksi terakhir lengkap dengan detail lot & P/L</div>
+        </div>
       </div>
-      <div class="feature-card" style="--fc:#3b82f6">
-        <div class="f-icon">🎯</div>
-        <div class="f-title">Win Rate & Profit Factor</div>
-        <div class="f-desc">Statistik performa lengkap: R:R, avg win/loss, max drawdown</div>
-      </div>
-      <div class="feature-card" style="--fc:#00ff88">
-        <div class="f-icon">🔥</div>
-        <div class="f-title">Win/Loss Streak</div>
-        <div class="f-desc">Lacak rentetan kemenangan & kekalahan beruntun</div>
-      </div>
-      <div class="feature-card" style="--fc:#06b6d4">
-        <div class="f-icon">💰</div>
-        <div class="f-title">Deposit, Withdrawal & ROI</div>
-        <div class="f-desc">Ringkasan dana masuk-keluar dan return on investment</div>
-      </div>
-      <div class="feature-card" style="--fc:#14b8a6">
-        <div class="f-icon">⚖️</div>
-        <div class="f-title">Win vs Loss</div>
-        <div class="f-desc">Perbandingan visual jumlah transaksi menang dan kalah dalam bentuk diagram</div>
-      </div>
-      <div class="feature-card" style="--fc:#f59e0b">
-        <div class="f-icon">📊</div>
-        <div class="f-title">P/L per Instrumen</div>
-        <div class="f-desc">Breakdown profit/loss berdasarkan symbol trading</div>
-      </div>
-      <div class="feature-card" style="--fc:#a855f7">
-        <div class="f-icon">📅</div>
-        <div class="f-title">P/L per Bulan & Minggu</div>
-        <div class="f-desc">Pantau tren performa mingguan dan bulanan</div>
-      </div>
-      <div class="feature-card" style="--fc:#22d3ee">
-        <div class="f-icon">🗓️</div>
-        <div class="f-title">Kalender P/L</div>
-        <div class="f-desc">Lihat profit/loss harian dalam tampilan kalender, navigasi antar bulan</div>
-      </div>
-      <div class="feature-card" style="--fc:#ff3366">
-        <div class="f-icon">📋</div>
-        <div class="f-title">Riwayat Trade</div>
-        <div class="f-desc">Daftar transaksi terakhir lengkap dengan detail lot & P/L</div>
-      </div>
-      <div class="feature-card" style="--fc:#64748b">
-        <div class="f-icon">🐛</div>
-        <div class="f-title">Parsing Log</div>
-        <div class="f-desc">Transparansi proses baca data agar mudah ditelusuri</div>
-      </div>
-      <div class="feature-card" style="--fc:#0ea5e9">
-        <div class="f-icon">🌓</div>
-        <div class="f-title">Tema Gelap & Terang</div>
-        <div class="f-desc">Beralih antara dark mode dan light mode sesuai kenyamanan mata</div>
+    </div>
+
+    <div class="feature-group" style="--gc:#64748b">
+      <div class="feature-group-label"><span class="fg-icon">⚙️</span> Transparansi & Kenyamanan</div>
+      <div class="features-grid">
+        <div class="feature-card" style="--fc:#64748b">
+          <div class="f-icon">🐛</div>
+          <div class="f-title">Parsing Log</div>
+          <div class="f-desc">Transparansi proses baca data agar mudah ditelusuri</div>
+        </div>
+        <div class="feature-card" style="--fc:#0ea5e9">
+          <div class="f-icon">🌓</div>
+          <div class="f-title">Tema Gelap & Terang</div>
+          <div class="f-desc">Beralih antara dark mode dan light mode sesuai kenyamanan mata</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2192,112 +2703,167 @@
     <div class="account-line" id="accountLine">
       <div class="neon-indicator"></div>
     </div>
-    <div class="stat-grid" id="statGrid"></div>
-    <div class="stat-toggle">
-      <button class="stat-toggle-btn" id="statToggleBtn">Tampilkan Lebih</button>
+
+    <div class="dashboard-nav">
+      <button type="button" class="dashboard-nav-btn" data-target="dgRingkasan">📌 Ringkasan</button>
+      <button type="button" class="dashboard-nav-btn" data-target="dgTren">📈 Tren & Grafik</button>
+      <button type="button" class="dashboard-nav-btn" data-target="dgRiwayat">🗂️ Riwayat & Rincian</button>
+      <button type="button" class="dashboard-nav-btn" data-target="dgTeknis">⚙️ Info Teknis</button>
     </div>
 
-    <div class="section-header">
-      <h2 class="section-title">Portfolio Score</h2>
-    </div>
-    <div class="score-section" id="portfolioScore"></div>
-
-    <div class="section-header">
-      <h2 class="section-title">Risiko Likuidasi Akun</h2>
-    </div>
-    <div class="score-section risk-section" id="liqRiskSection"></div>
-    <div class="risk-note" id="liqRiskNote"></div>
-
-    <div class="section-header">
-      <h2 class="section-title">Equity Curve</h2>
-      <div class="eq-controls" id="eqControls">
-        <div class="range-toggle" id="eqRangeToggle">
-          <button type="button" class="range-btn active" data-range="all">Semua</button>
-          <button type="button" class="range-btn" data-range="3m">3 Bulan Terakhir</button>
-          <button type="button" class="range-btn" data-range="1m">1 Bulan Terakhir</button>
-          <button type="button" class="range-btn" data-range="1w">1 Minggu Terakhir</button>
+    <div class="dashboard-group" id="dgRingkasan" style="--gc:#3b82f6">
+      <div class="dashboard-group-header">
+        <span class="dg-num">01</span>
+        <div>
+          <h2 class="dg-title">Ringkasan Akun</h2>
+          <p class="dg-sub">Gambaran besar performa akun Anda saat ini</p>
         </div>
-        <button type="button" class="eq-reset-btn" id="eqResetZoom" title="Reset zoom & geser">⤾ Reset</button>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="stat-toggle">
+        <button class="stat-toggle-btn" id="statToggleBtn">Tampilkan Lebih</button>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Portfolio Score</h2>
+      </div>
+      <div class="score-section" id="portfolioScore"></div>
+
+      <div class="section-header">
+        <h2 class="section-title">Risiko Likuidasi Akun</h2>
+      </div>
+      <div class="score-section risk-section" id="liqRiskSection"></div>
+      <div class="risk-note" id="liqRiskNote"></div>
+
+      <div class="section-header">
+        <h2 class="section-title">⚡ Thunder AI</h2>
+      </div>
+      <div class="ai-insight-section" id="aiInsightSection"></div>
+    </div>
+
+    <div class="dashboard-group" id="dgTren" style="--gc:#eab308">
+      <div class="dashboard-group-header">
+        <span class="dg-num">02</span>
+        <div>
+          <h2 class="dg-title">Tren & Grafik</h2>
+          <p class="dg-sub">Pergerakan saldo dan pola profit/loss dari waktu ke waktu</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Equity Curve</h2>
+        <div class="eq-controls" id="eqControls">
+          <div class="range-toggle" id="eqRangeToggle">
+            <button type="button" class="range-btn active" data-range="all">Semua</button>
+            <button type="button" class="range-btn" data-range="1y">1 Tahun Terakhir</button>
+            <button type="button" class="range-btn" data-range="6m">6 Bulan Terakhir</button>
+            <button type="button" class="range-btn" data-range="3m">3 Bulan Terakhir</button>
+            <button type="button" class="range-btn" data-range="1m">1 Bulan Terakhir</button>
+            <button type="button" class="range-btn" data-range="1w">1 Minggu Terakhir</button>
+          </div>
+          <button type="button" class="eq-reset-btn" id="eqResetZoom" title="Reset zoom & geser">⤾ Reset</button>
+        </div>
+      </div>
+      <div class="chart-box chart-box-equity">
+        <canvas id="equityChart"></canvas>
+      </div>
+      <div class="eq-hint">🖱️ Scroll untuk zoom · geser (drag) untuk menjelajah waktu · klik titik untuk detail transaksi</div>
+
+      <div class="section-header">
+        <h2 class="section-title">Kalender P/L</h2>
+        <div class="calendar-nav">
+          <button class="calendar-nav-btn" id="calPrevBtn" aria-label="Bulan sebelumnya">‹</button>
+          <span class="calendar-month-label" id="calMonthLabel"></span>
+          <button class="calendar-nav-btn" id="calNextBtn" aria-label="Bulan berikutnya">›</button>
+        </div>
+      </div>
+      <div class="calendar-box">
+        <div class="calendar-summary" id="calendarSummary"></div>
+        <div class="calendar-weekdays">
+          <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <div class="mini-chart-grid">
+        <div>
+          <div class="section-header"><h2 class="section-title" style="margin:0">Win vs Loss</h2></div>
+          <div class="mini-chart-box"><canvas id="winChart"></canvas></div>
+          <div class="legend" id="winLegend"></div>
+        </div>
+        <div>
+          <div class="section-header"><h2 class="section-title" style="margin:0">P/L per Instrumen</h2></div>
+          <div class="mini-chart-box"><canvas id="symChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="section-header"><h2 class="section-title">P/L per Bulan</h2></div>
+      <div class="chart-box"><canvas id="monthChart"></canvas></div>
+
+      <div class="section-header"><h2 class="section-title">P/L per Minggu</h2></div>
+      <div class="chart-box"><canvas id="weekChart"></canvas></div>
+    </div>
+
+    <div class="dashboard-group" id="dgRiwayat" style="--gc:#14b8a6">
+      <div class="dashboard-group-header">
+        <span class="dg-num">03</span>
+        <div>
+          <h2 class="dg-title">Riwayat & Rincian Transaksi</h2>
+          <p class="dg-sub">Rentetan, transaksi terakhir, dan arus dana masuk-keluar</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Rentetan Menang & Kalah</h2>
+      </div>
+      <div class="consecutive-container">
+        <div class="consecutive-grid" id="consecutiveStats"></div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">10 Transaksi Terakhir</h2>
+      </div>
+      <div class="recent-trades-container">
+        <table class="trade-table" id="tradeTable">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Tipe</th>
+              <th>Simbol</th>
+              <th>Lot</th>
+              <th>P/L</th>
+            </tr>
+          </thead>
+          <tbody id="tradeBody"></tbody>
+        </table>
+        <div class="trade-toggle">
+          <button class="trade-toggle-btn" id="tradeToggleBtn">Tampilkan Lebih</button>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-title">Deposit & Withdrawal</h2>
+      </div>
+      <div class="summary-box">
+        <div class="summary-row" id="depositRow"></div>
       </div>
     </div>
-    <div class="chart-box chart-box-equity">
-      <canvas id="equityChart"></canvas>
-    </div>
-    <div class="eq-hint">🖱️ Scroll untuk zoom · geser (drag) untuk menjelajah waktu · klik titik untuk detail transaksi</div>
 
-    <div class="section-header">
-      <h2 class="section-title">Kalender P/L</h2>
-      <div class="calendar-nav">
-        <button class="calendar-nav-btn" id="calPrevBtn" aria-label="Bulan sebelumnya">‹</button>
-        <span class="calendar-month-label" id="calMonthLabel"></span>
-        <button class="calendar-nav-btn" id="calNextBtn" aria-label="Bulan berikutnya">›</button>
+    <div class="dashboard-group" id="dgTeknis" style="--gc:#64748b">
+      <div class="dashboard-group-header">
+        <span class="dg-num">04</span>
+        <div>
+          <h2 class="dg-title">Info Teknis</h2>
+          <p class="dg-sub">Log parsing data untuk transparansi proses baca statement</p>
+        </div>
       </div>
-    </div>
-    <div class="calendar-box">
-      <div class="calendar-summary" id="calendarSummary"></div>
-      <div class="calendar-weekdays">
-        <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+
+      <div class="section-header">
+        <h2 class="section-title">Parsing Log</h2>
       </div>
-      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="debug-container" id="debugInfo"></div>
     </div>
-
-    <div class="section-header">
-      <h2 class="section-title">Rentetan Menang & Kalah</h2>
-    </div>
-    <div class="consecutive-container">
-      <div class="consecutive-grid" id="consecutiveStats"></div>
-    </div>
-
-    <div class="section-header">
-      <h2 class="section-title">10 Transaksi Terakhir</h2>
-    </div>
-    <div class="recent-trades-container">
-      <table class="trade-table" id="tradeTable">
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Tipe</th>
-            <th>Simbol</th>
-            <th>Lot</th>
-            <th>P/L</th>
-          </tr>
-        </thead>
-        <tbody id="tradeBody"></tbody>
-      </table>
-      <div class="trade-toggle">
-        <button class="trade-toggle-btn" id="tradeToggleBtn">Tampilkan Lebih</button>
-      </div>
-    </div>
-
-    <div class="section-header">
-      <h2 class="section-title">Deposit & Withdrawal</h2>
-    </div>
-    <div class="summary-box">
-      <div class="summary-row" id="depositRow"></div>
-    </div>
-
-    <div class="mini-chart-grid">
-      <div>
-        <div class="section-header"><h2 class="section-title" style="margin:0">Win vs Loss</h2></div>
-        <div class="mini-chart-box"><canvas id="winChart"></canvas></div>
-        <div class="legend" id="winLegend"></div>
-      </div>
-      <div>
-        <div class="section-header"><h2 class="section-title" style="margin:0">P/L per Instrumen</h2></div>
-        <div class="mini-chart-box"><canvas id="symChart"></canvas></div>
-      </div>
-    </div>
-
-    <div class="section-header"><h2 class="section-title">P/L per Bulan</h2></div>
-    <div class="chart-box"><canvas id="monthChart"></canvas></div>
-
-    <div class="section-header"><h2 class="section-title">P/L per Minggu</h2></div>
-    <div class="chart-box"><canvas id="weekChart"></canvas></div>
-
-    <div class="section-header">
-      <h2 class="section-title">Parsing Log</h2>
-    </div>
-    <div class="debug-container" id="debugInfo"></div>
 
     <button class="reset-link" id="resetLink">Upload file lain</button>
   </div>
@@ -2666,7 +3232,7 @@ function sliceEquityRange(range) {
   if (range === 'all' || eqFullData.length <= 1) {
     return { labels: eqFullLabels, dates: eqFullDates, data: eqFullData };
   }
-  const rangeDays = { '1w': 7, '1m': 30, '3m': 90 }[range];
+  const rangeDays = { '1w': 7, '1m': 30, '3m': 90, '6m': 182, '1y': 365 }[range];
   if (!rangeDays) {
     return { labels: eqFullLabels, dates: eqFullDates, data: eqFullData };
   }
@@ -2799,6 +3365,128 @@ if (eqResetZoomBtn) {
   eqResetZoomBtn.addEventListener('click', () => {
     if (equityChartInstance) equityChartInstance.resetZoom();
   });
+}
+
+function renderAIInsight(ctx) {
+  const box = document.getElementById('aiInsightSection');
+  const {
+    portfolioScore, scoreLabel, scoreColor,
+    winRate, wins, losses, tradeCount,
+    pf, rrRatioNum, rrRatio,
+    avgWinProfit, avgLossProfit,
+    ddPercent, maxDD, recoveryFactor,
+    winStreaks, lossStreaks, currentStreak,
+    liqRiskScore, riskLabel, riskColor,
+    worstLossAmount, worstLossCount, bufferPercent,
+    symTotals, totalPl
+  } = ctx;
+
+  if (!tradeCount) {
+    box.innerHTML = `
+      <div class="ai-insight-top">
+        <div class="ai-insight-icon"><svg viewBox="0 0 24 24" width="24" height="24" class="ai-icon-svg" aria-hidden="true"><path d="M12 2 19 4.6 19 10.5C19 16 15.5 20 12 21.5 8.5 20 5 16 5 10.5L5 4.6Z" fill="#fff" opacity="0.16"/><path d="M12 2 19 4.6 19 10.5C19 16 15.5 20 12 21.5 8.5 20 5 16 5 10.5L5 4.6Z" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/><path d="M13.1 5.8 8.8 12.3h3l-0.5 5.4 4.9-6.9h-3l0.4-5z" fill="#fff"/></svg><span class="ai-dot"></span></div>
+        <div class="ai-insight-title-wrap">
+          <div class="ai-insight-title">Thunder AI <span class="ai-badge-tag">AI</span></div>
+          <div class="ai-insight-sub">Evaluasi kilat performa akun</div>
+        </div>
+      </div>
+      <div class="ai-insight-summary">Belum ada transaksi buat dianalisis. Upload statement dulu, ya ⚡</div>
+    `;
+    return;
+  }
+
+  const symEntries = Object.entries(symTotals || {});
+  const bestSym = symEntries.length ? symEntries.reduce((a, b) => b[1] > a[1] ? b : a) : null;
+  const worstSym = symEntries.length ? symEntries.reduce((a, b) => b[1] < a[1] ? b : a) : null;
+
+  // ===== Ringkasan (singkat) =====
+  let summary = `Akun ini ada di level <b>${scoreLabel}</b>. `;
+  if (currentStreak) {
+    summary += currentStreak.type === 'win'
+      ? `Lagi hot streak, ${currentStreak.count}x menang beruntun 🔥`
+      : `Lagi kena ${currentStreak.count}x kalah beruntun — tetap tenang & disiplin.`;
+  } else {
+    summary += `Terus pantau performa biar makin konsisten.`;
+  }
+
+  const chips = [
+    ['🎯', 'Win Rate', winRate + '%', '#3b82f6'],
+    ['⚖️', 'PF', pf.toFixed(2) + 'x', '#eab308'],
+    ['🎲', 'R:R', rrRatio + ':1', '#06b6d4'],
+    ['🛡️', 'Drawdown', ddPercent.toFixed(1) + '%', '#a855f7'],
+    ['💣', 'Risiko Likuidasi', riskLabel, riskColor]
+  ];
+  const chipsHTML = chips.map(([icon, label, value, color]) =>
+    `<span class="ai-chip" style="--cc:${color}">${icon} ${label} <b>${value}</b></span>`
+  ).join('');
+
+  // ===== Kekuatan (ringkas) =====
+  const strengths = [];
+  if (winRate >= 55) strengths.push(`Win rate tinggi (${winRate}%)`);
+  if (pf >= 1.5) strengths.push(`Profit Factor sehat (${pf.toFixed(2)}x)`);
+  if (rrRatioNum >= 1.3) strengths.push(`R:R menguntungkan (${rrRatio}:1)`);
+  if (ddPercent < 15) strengths.push(`Drawdown terkendali (${ddPercent.toFixed(1)}%)`);
+  if (recoveryFactor >= 2) strengths.push(`Recovery factor kuat (${recoveryFactor.toFixed(2)}x)`);
+  if (currentStreak && currentStreak.type === 'win' && currentStreak.count >= 3) strengths.push(`Momentum positif, ${currentStreak.count}x menang beruntun`);
+  if (liqRiskScore <= 25) strengths.push(`Risiko likuidasi rendah (skor ${liqRiskScore})`);
+  if (bestSym && bestSym[1] > 0) strengths.push(`${bestSym[0]} jadi sumber cuan terbesar`);
+
+  // ===== Perlu Diperhatikan (ringkas) =====
+  const watchpoints = [];
+  if (winRate < 40) watchpoints.push(`Win rate rendah (${winRate}%)`);
+  if (pf > 0 && pf < 1.2) watchpoints.push(`Profit Factor tipis (${pf.toFixed(2)}x)`);
+  if (rrRatioNum > 0 && rrRatioNum < 1) watchpoints.push(`R:R kurang ideal (${rrRatio}:1)`);
+  if (ddPercent > 25) watchpoints.push(`Drawdown cukup dalam (${ddPercent.toFixed(1)}%)`);
+  if (liqRiskScore >= 51) watchpoints.push(`Risiko likuidasi ${riskLabel.toLowerCase()} (skor ${liqRiskScore})`);
+  if (worstLossCount >= 5) watchpoints.push(`Pernah loss streak ${worstLossCount}x beruntun`);
+  if (avgLossProfit !== 0 && Math.abs(avgLossProfit) > avgWinProfit * 1.5) watchpoints.push(`Rata-rata loss lebih besar dari rata-rata profit`);
+  if (worstSym && worstSym[1] < 0 && Math.abs(worstSym[1]) > Math.abs(totalPl || 1) * 0.3) watchpoints.push(`${worstSym[0]} jadi sumber rugi terbesar`);
+
+  // ===== Rekomendasi (ringkas) =====
+  const actions = [];
+  if (winRate < 40) actions.push(`Perketat kriteria entry / backtest ulang`);
+  if (rrRatioNum > 0 && rrRatioNum < 1) actions.push(`Naikkan TP atau perkecil SL biar R:R lebih bagus`);
+  if (ddPercent > 25 || liqRiskScore >= 51) actions.push(`Kecilkan lot, batasi risiko per trade`);
+  if (worstLossCount >= 5) actions.push(`Pasang batas loss harian/mingguan`);
+  if (avgLossProfit !== 0 && Math.abs(avgLossProfit) > avgWinProfit * 1.5) actions.push(`Disiplin pakai stop loss`);
+  if (worstSym && worstSym[1] < 0 && Math.abs(worstSym[1]) > Math.abs(totalPl || 1) * 0.3) actions.push(`Tinjau ulang strategi di ${worstSym[0]}`);
+  if (!actions.length) actions.push(`Pertahankan strategi & disiplin yang udah jalan`);
+  actions.push(`Rutin cek jurnal trading`);
+
+  const listHTML = (items, emptyText) => items.length
+    ? items.slice(0, 4).map(t => `<li>${t}</li>`).join('')
+    : `<li class="ai-insight-empty">${emptyText}</li>`;
+
+  box.innerHTML = `
+    <div class="ai-insight-top">
+      <div class="ai-insight-icon"><svg viewBox="0 0 24 24" width="24" height="24" class="ai-icon-svg" aria-hidden="true"><path d="M12 2 19 4.6 19 10.5C19 16 15.5 20 12 21.5 8.5 20 5 16 5 10.5L5 4.6Z" fill="#fff" opacity="0.16"/><path d="M12 2 19 4.6 19 10.5C19 16 15.5 20 12 21.5 8.5 20 5 16 5 10.5L5 4.6Z" fill="none" stroke="#fff" stroke-width="1.3" stroke-linejoin="round"/><path d="M13.1 5.8 8.8 12.3h3l-0.5 5.4 4.9-6.9h-3l0.4-5z" fill="#fff"/></svg><span class="ai-dot"></span></div>
+      <div class="ai-insight-title-wrap">
+        <div class="ai-insight-title">Thunder AI <span class="ai-badge-tag">AI</span></div>
+        <div class="ai-insight-sub">Evaluasi kilat performa akun kamu</div>
+      </div>
+      <div class="ai-insight-verdict" style="--vc:${scoreColor}">${scoreLabel} · ${portfolioScore}</div>
+    </div>
+    <div class="ai-insight-chips">${chipsHTML}</div>
+    <p class="ai-insight-summary">${summary}</p>
+    <div class="ai-insight-columns">
+      <div class="ai-insight-col ai-insight-col--strength">
+        <div class="ai-insight-col-title"><span class="ai-insight-col-icon">✅</span>Kekuatan</div>
+        <ul class="ai-insight-list">${listHTML(strengths, 'Belum ada yang menonjol.')}</ul>
+      </div>
+      <div class="ai-insight-col ai-insight-col--watch">
+        <div class="ai-insight-col-title"><span class="ai-insight-col-icon">⚠️</span>Perhatikan</div>
+        <ul class="ai-insight-list">${listHTML(watchpoints, 'Aman, gak ada yang mencolok.')}</ul>
+      </div>
+      <div class="ai-insight-col ai-insight-col--action">
+        <div class="ai-insight-col-title"><span class="ai-insight-col-icon">💡</span>Saran</div>
+        <ul class="ai-insight-list">${listHTML(actions, 'Lanjutkan saja seperti sekarang.')}</ul>
+      </div>
+    </div>
+    <div class="ai-insight-disclaimer">
+      <span>ℹ️</span>
+      <span>Evaluasi otomatis dari pola data transaksi kamu, bukan saran finansial. Tetap gunakan penilaian sendiri sebelum ambil keputusan trading.</span>
+    </div>
+  `;
 }
 
 function renderDashboard(data) {
@@ -2986,6 +3674,21 @@ function renderDashboard(data) {
   document.getElementById('liqRiskNote').innerHTML =
     `<span>⚠️</span><span><b>Estimasi, bukan data margin real-time dari broker.</b> Skor dihitung dari perbandingan pola historis (max drawdown & loss streak terburuk) terhadap equity saat ini — bukan level margin call/stop-out sebenarnya, karena data itu tidak tersedia dari file statement. Gunakan sebagai bahan evaluasi manajemen risiko (lot size, SL, dan money management), bukan acuan mutlak kapan akun akan kena margin call.</span>`;
 
+  // ===== AI Insight =====
+  const symTotals = {};
+  trades.forEach(t => { symTotals[t.item] = (symTotals[t.item] || 0) + t.pl; });
+
+  renderAIInsight({
+    portfolioScore, scoreLabel, scoreColor,
+    winRate, wins, losses, tradeCount: trades.length,
+    pf, rrRatioNum, rrRatio,
+    avgWinProfit, avgLossProfit,
+    ddPercent, maxDD, recoveryFactor,
+    winStreaks, lossStreaks, currentStreak,
+    liqRiskScore: finalScore, riskLabel, riskColor,
+    worstLossAmount, worstLossCount, bufferPercent,
+    symTotals, totalPl, initialDeposit, currentEquity
+  });
 
   renderTrades();
 
@@ -3024,9 +3727,6 @@ function renderDashboard(data) {
   }));
 
   document.getElementById('winLegend').innerHTML = `<span><span class="dot" style="background:#00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);"></span>Win ${wins}</span><span><span class="dot" style="background:#ff3366; box-shadow: 0 0 10px rgba(255, 51, 102, 0.6);"></span>Loss ${losses}</span>`;
-
-  const symTotals = {};
-  trades.forEach(t => { symTotals[t.item] = (symTotals[t.item] || 0) + t.pl; });
 
   charts.push(new Chart(document.getElementById('symChart'), {
     type: 'bar',
@@ -3269,7 +3969,7 @@ function sgFallbackCopy(input, cb) {
   Promise.all([minDelay, pageLoaded]).then(revealPage);
   setTimeout(revealPage, 2600); // safety fallback
 
-  const revealSelectors = '.feature-card, .score-section, .chart-box, .mini-chart-box, .consecutive-container, .summary-row, .stat-toggle, .risk-note, .recent-trades-container, .calendar-box, .section-header';
+  const revealSelectors = '.feature-card, .score-section, .chart-box, .mini-chart-box, .consecutive-container, .summary-row, .stat-toggle, .risk-note, .recent-trades-container, .calendar-box, .section-header, .ai-insight-section, .dashboard-group-header';
   document.querySelectorAll(revealSelectors).forEach(el => el.classList.add('reveal-up'));
 
   // Reveal dua arah: elemen fade/slide masuk saat discroll ke bawah,
@@ -3284,6 +3984,34 @@ function sgFallbackCopy(input, cb) {
   document.querySelectorAll('.reveal-up').forEach((el, i) => {
     el.style.transitionDelay = Math.min(i % 6, 5) * 0.05 + 's';
   });
+
+  // ===== Navigasi cepat dashboard (Ringkasan / Tren / Riwayat / Info Teknis) =====
+  const dashNavLinks = document.querySelectorAll('.dashboard-nav-btn[data-target]');
+  dashNavLinks.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      const y = target.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+  if (dashNavLinks.length) {
+    const dashGroups = Array.from(dashNavLinks)
+      .map(btn => document.getElementById(btn.getAttribute('data-target')))
+      .filter(Boolean);
+    const dashNavIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const btn = document.querySelector('.dashboard-nav-btn[data-target="' + entry.target.id + '"]');
+        if (!btn) return;
+        if (entry.isIntersecting) {
+          dashNavLinks.forEach(l => l.classList.remove('active'));
+          btn.classList.add('active');
+        }
+      });
+    }, { threshold: 0, rootMargin: '-40% 0px -50% 0px' });
+    dashGroups.forEach(g => dashNavIO.observe(g));
+  }
 })();
 </script>
 </body>
