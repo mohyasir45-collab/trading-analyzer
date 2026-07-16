@@ -2761,6 +2761,46 @@
   .ai-chat-key-status .dot-ok { width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 5px #00ff88; }
   .ai-chat-key-status .dot-off { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 5px #f59e0b; }
 
+  .ai-chat-key-list { display: flex; flex-direction: column; gap: 10px; }
+  .ai-chat-key-provider {
+    padding-top: 9px;
+    border-top: 1px dashed var(--border);
+  }
+  .ai-chat-key-provider:first-child { padding-top: 0; border-top: none; }
+  .ai-chat-key-provider-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .ai-chat-key-provider-badge {
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(31, 191, 95, 0.12);
+    color: #1fbf5f;
+  }
+  .ai-chat-key-provider-badge.paid { background: rgba(234, 179, 8, 0.14); color: #eab308; }
+  .ai-chat-key-provider-link {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .ai-chat-key-provider-link:hover { color: #1fbf5f; text-decoration: underline; }
+  .ai-chat-key-provider-active-tag {
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.16);
+    color: #60a5fa;
+  }
+
   .ai-chat-body {
     flex: 1;
     overflow-y: auto;
@@ -3221,13 +3261,8 @@
             <button class="ai-chat-key-btn" id="aiEmbeddedChatKeyBtn" type="button" aria-label="Atur API Key OpenAI kamu" title="Atur API Key OpenAI kamu" style="margin-left:auto;">🔑</button>
           </div>
           <div class="ai-chat-key-panel" id="aiEmbeddedChatKeyPanel">
-            <p>Chat ini pakai API key OpenAI milik kamu sendiri. Key hanya disimpan di browser kamu (tidak dikirim ke siapa pun selain OpenAI). Dapatkan key di <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a>.</p>
-            <div class="ai-chat-key-row">
-              <input type="password" class="ai-chat-key-input" id="aiEmbeddedChatKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
-              <button class="ai-chat-key-save" id="aiEmbeddedChatKeySave" type="button">Simpan</button>
-              <button class="ai-chat-key-clear" id="aiEmbeddedChatKeyClear" type="button">Hapus</button>
-            </div>
-            <div class="ai-chat-key-status" id="aiEmbeddedChatKeyStatus"></div>
+            <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
+            <div class="ai-chat-key-list" id="aiEmbeddedChatKeyList"></div>
           </div>
           <div class="ai-chat-body ai-embedded-chat-body" id="aiEmbeddedChatBody"></div>
           <div class="ai-chat-suggestions" id="aiEmbeddedChatSuggestions">
@@ -4536,13 +4571,8 @@ function sgFallbackCopy(input, cb) {
     <button class="ai-chat-close" id="aiChatCloseBtn" aria-label="Tutup chat">✕</button>
   </div>
   <div class="ai-chat-key-panel" id="aiChatKeyPanel">
-    <p>Chat ini pakai API key OpenAI milik kamu sendiri. Key hanya disimpan di browser kamu (tidak dikirim ke siapa pun selain OpenAI). Dapatkan key di <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a>.</p>
-    <div class="ai-chat-key-row">
-      <input type="password" class="ai-chat-key-input" id="aiChatKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
-      <button class="ai-chat-key-save" id="aiChatKeySave" type="button">Simpan</button>
-      <button class="ai-chat-key-clear" id="aiChatKeyClear" type="button">Hapus</button>
-    </div>
-    <div class="ai-chat-key-status" id="aiChatKeyStatus"></div>
+    <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
+    <div class="ai-chat-key-list" id="aiChatKeyList"></div>
   </div>
 
   <div class="ai-chat-body" id="aiChatBody"></div>
@@ -4561,27 +4591,58 @@ function sgFallbackCopy(input, cb) {
 
 <script>
 /* =====================================================================
-   AI CHAT WIDGET — KONFIGURASI
+   AI CHAT WIDGET — KONFIGURASI MULTI-PROVIDER (GRATIS)
    =====================================================================
-   Setiap pengunjung memasukkan API key OpenAI MILIK MEREKA SENDIRI lewat
-   tombol 🔑 di chatbox. Key disimpan di localStorage browser pengguna.
+   Chatbox ini bisa memakai beberapa provider AI GRATIS sekaligus:
+   Groq, OpenRouter, Google Gemini (dan opsional OpenAI jika mau bayar).
+   Setiap pengguna memasukkan API key mereka sendiri (gratis dibuat di
+   masing-masing situs provider). Kalau lebih dari satu key diisi,
+   sistem otomatis MENCOBA PROVIDER LAIN kalau provider pertama gagal
+   (limit habis, error, dsb) — jadi chat tetap jalan.
 
-   PENTING soal CORS: OpenAI memblokir request langsung dari browser,
-   apapun key yang dipakai — jadi chatbox ini TIDAK memanggil OpenAI
-   secara langsung, melainkan lewat proxy kecil (Cloudflare Worker).
-   Proxy ini HANYA meneruskan key milik user ke OpenAI untuk request itu
-   saja — tidak menyimpan key siapa pun. Kode & panduan deploy proxy ada
-   di file terpisah "cloudflare-worker.js" (gratis, ±5 menit).
-
-   Setelah proxy jadi, kamu akan dapat URL seperti:
-   https://thunder-trade-ai.<username-kamu>.workers.dev
-   Tempel URL itu ke apiUrl di bawah ini.
+   Semua request tetap lewat proxy Cloudflare Worker (lihat file
+   "cloudflare-worker.js") supaya tidak kena blokir CORS dari browser.
    ===================================================================== */
   const AI_CHAT_CONFIG = {
     apiUrl: 'https://thunder-trade-ai.mohyasir45.workers.dev', // URL Cloudflare Worker milik Thunder Trade
-    model: 'gpt-4o-mini',
-    storageKey: 'thunderTradeUserApiKey', // nama key di localStorage browser pengguna
+    storagePrefix: 'thunderTradeApiKey_', // prefix nama key di localStorage, per provider
   };
+
+  // Daftar provider gratis yang didukung. Urutan = urutan prioritas fallback.
+  const AI_PROVIDERS = [
+    {
+      id: 'groq',
+      label: 'Groq',
+      badge: 'Gratis & cepat',
+      model: 'llama-3.3-70b-versatile',
+      keyHint: 'gsk_...',
+      keyLink: 'https://console.groq.com/keys',
+    },
+    {
+      id: 'openrouter',
+      label: 'OpenRouter',
+      badge: 'Gratis, banyak model',
+      model: 'openrouter/free',
+      keyHint: 'sk-or-...',
+      keyLink: 'https://openrouter.ai/keys',
+    },
+    {
+      id: 'gemini',
+      label: 'Google Gemini',
+      badge: 'Gratis',
+      model: 'gemini-2.5-flash',
+      keyHint: 'AIza...',
+      keyLink: 'https://aistudio.google.com/apikey',
+    },
+    {
+      id: 'openai',
+      label: 'OpenAI',
+      badge: 'Berbayar',
+      model: 'gpt-4o-mini',
+      keyHint: 'sk-...',
+      keyLink: 'https://platform.openai.com/api-keys',
+    },
+  ];
 /* ===================================================================== */
 
 (function () {
@@ -4590,20 +4651,25 @@ function sgFallbackCopy(input, cb) {
     return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(n);
   }
 
-  // ===== Manajemen API key milik pengguna (tersimpan lokal di browser mereka) =====
-  function getUserApiKey() {
-    try { return localStorage.getItem(AI_CHAT_CONFIG.storageKey) || ''; }
+  // ===== Manajemen API key milik pengguna, per-provider (tersimpan lokal di browser mereka) =====
+  function getProviderKey(providerId) {
+    try { return localStorage.getItem(AI_CHAT_CONFIG.storagePrefix + providerId) || ''; }
     catch (e) { return ''; }
   }
-  function setUserApiKey(key) {
+  function setProviderKey(providerId, key) {
     try {
-      if (key) localStorage.setItem(AI_CHAT_CONFIG.storageKey, key);
-      else localStorage.removeItem(AI_CHAT_CONFIG.storageKey);
+      const k = AI_CHAT_CONFIG.storagePrefix + providerId;
+      if (key) localStorage.setItem(k, key);
+      else localStorage.removeItem(k);
     } catch (e) { /* localStorage tidak tersedia (mode privat, dsb) */ }
+  }
+  // Provider yang sudah diisi key-nya, diurutkan sesuai prioritas AI_PROVIDERS
+  function getConfiguredProviders() {
+    return AI_PROVIDERS.filter(p => !!getProviderKey(p.id));
   }
   function maskKey(key) {
     if (!key) return '';
-    return key.slice(0, 7) + '••••' + key.slice(-4);
+    return key.slice(0, 6) + '••••' + key.slice(-4);
   }
 
 
@@ -4643,10 +4709,11 @@ function sgFallbackCopy(input, cb) {
 
   // Factory: membuat satu instance chatbox AI yang terhubung ke elemen DOM tertentu.
   // Dipakai dua kali: untuk widget mengambang (floating) dan chatbox tertanam di card Thunder AI.
-  function createChatInstance({ body, input, sendBtn, chips, welcomeText, keyBtn, keyPanel, keyInput, keySave, keyClear, keyStatus }) {
+  function createChatInstance({ body, input, sendBtn, chips, welcomeText, keyBtn, keyPanel, keyList }) {
     let history = []; // { role: 'user'|'assistant', content: string }
     let isSending = false;
     let greeted = false;
+    const providerRowRefs = {}; // providerId -> { input, status }
 
     function addMessage(text, role) {
       const div = document.createElement('div');
@@ -4679,23 +4746,73 @@ function sgFallbackCopy(input, cb) {
       if (el) el.remove();
     }
 
-    // ===== UI panel pengaturan API key milik pengguna =====
+    // ===== UI panel pengaturan API key multi-provider =====
+    function buildKeyList() {
+      if (!keyList) return;
+      keyList.innerHTML = '';
+      AI_PROVIDERS.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'ai-chat-key-provider';
+        row.innerHTML = `
+          <div class="ai-chat-key-provider-head">
+            <span>${p.label}</span>
+            <span class="ai-chat-key-provider-badge${p.badge === 'Berbayar' ? ' paid' : ''}">${p.badge}</span>
+            <a class="ai-chat-key-provider-link" href="${p.keyLink}" target="_blank" rel="noopener">dapatkan key ↗</a>
+          </div>
+          <div class="ai-chat-key-row">
+            <input type="password" class="ai-chat-key-input" placeholder="${p.keyHint}" autocomplete="off" spellcheck="false">
+            <button class="ai-chat-key-save" type="button">Simpan</button>
+            <button class="ai-chat-key-clear" type="button">Hapus</button>
+          </div>
+          <div class="ai-chat-key-status"></div>
+        `;
+        const pInput = row.querySelector('.ai-chat-key-input');
+        const pSave = row.querySelector('.ai-chat-key-save');
+        const pClear = row.querySelector('.ai-chat-key-clear');
+        const pStatus = row.querySelector('.ai-chat-key-status');
+
+        pInput.value = getProviderKey(p.id);
+
+        pSave.addEventListener('click', () => {
+          const val = (pInput.value || '').trim();
+          if (!val) { addSystemNote('⚠️ Isi dulu API key ' + p.label + ' sebelum menyimpan.'); return; }
+          setProviderKey(p.id, val);
+          refreshKeyUI();
+          addSystemNote('✅ API key ' + p.label + ' tersimpan di browser kamu.');
+        });
+        pClear.addEventListener('click', () => {
+          setProviderKey(p.id, '');
+          pInput.value = '';
+          refreshKeyUI();
+          addSystemNote('🗑️ API key ' + p.label + ' dihapus dari browser kamu.');
+        });
+
+        providerRowRefs[p.id] = { input: pInput, status: pStatus };
+        keyList.appendChild(row);
+      });
+      refreshKeyUI();
+    }
+
     function refreshKeyUI() {
-      const key = getUserApiKey();
-      if (keyBtn) keyBtn.classList.toggle('needs-key', !key);
-      if (keyStatus) {
-        keyStatus.innerHTML = key
-          ? '<span class="dot-ok"></span>API key aktif (' + maskKey(key) + ')'
-          : '<span class="dot-off"></span>Belum ada API key tersimpan';
-      }
+      const configured = getConfiguredProviders();
+      if (keyBtn) keyBtn.classList.toggle('needs-key', configured.length === 0);
+      AI_PROVIDERS.forEach((p, idx) => {
+        const ref = providerRowRefs[p.id];
+        if (!ref) return;
+        const key = getProviderKey(p.id);
+        if (!key) {
+          ref.status.innerHTML = '<span class="dot-off"></span>Belum ada API key';
+        } else {
+          const isPrimary = configured.length && configured[0].id === p.id;
+          ref.status.innerHTML = '<span class="dot-ok"></span>Key aktif (' + maskKey(key) + ')' +
+            (isPrimary ? ' <span class="ai-chat-key-provider-active-tag">Prioritas utama</span>' : '');
+        }
+      });
     }
     function openKeyPanel() {
       if (!keyPanel) return;
       keyPanel.classList.add('open');
-      const current = getUserApiKey();
-      if (keyInput) keyInput.value = current;
       refreshKeyUI();
-      if (keyInput) keyInput.focus();
     }
     function closeKeyPanel() {
       if (keyPanel) keyPanel.classList.remove('open');
@@ -4704,26 +4821,66 @@ function sgFallbackCopy(input, cb) {
       if (keyPanel && keyPanel.classList.contains('open')) closeKeyPanel();
       else openKeyPanel();
     });
-    if (keySave) keySave.addEventListener('click', () => {
-      const val = (keyInput.value || '').trim();
-      if (!val) { addSystemNote('⚠️ Isi dulu API key kamu sebelum menyimpan.'); return; }
-      if (!val.startsWith('sk-')) { addSystemNote('⚠️ Format API key OpenAI biasanya diawali "sk-". Pastikan key sudah benar.'); }
-      setUserApiKey(val);
-      refreshKeyUI();
-      closeKeyPanel();
-      addSystemNote('✅ API key tersimpan di browser kamu. Sekarang kamu bisa mulai chat.');
-    });
-    if (keyClear) keyClear.addEventListener('click', () => {
-      setUserApiKey('');
-      if (keyInput) keyInput.value = '';
-      refreshKeyUI();
-      addSystemNote('🗑️ API key dihapus dari browser kamu.');
-    });
+
+    // Panggil satu provider tertentu. Return { ok, reply, errorMsg, retryable }
+    async function callProvider(provider, key, messages) {
+      try {
+        const res = await fetch(AI_CHAT_CONFIG.apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            provider: provider.id,       // Worker memetakan id ini ke endpoint resmi provider
+            apiKey: key,                 // API key milik pengguna sendiri, hanya diteruskan proxy
+            model: provider.model,
+            messages: messages,
+            temperature: 0.6,
+            max_tokens: 500
+          })
+        });
+
+        if (!res.ok) {
+          const errText = await res.text().catch(() => '');
+          if (res.status === 401 || res.status === 400) {
+            return { ok: false, retryable: true, errorMsg: provider.label + ': API key ditolak (kemungkinan salah/kadaluarsa).' };
+          }
+          if (res.status === 429) {
+            return { ok: false, retryable: true, errorMsg: provider.label + ': kuota/limit habis untuk saat ini.' };
+          }
+          if (res.status === 403) {
+            return { ok: false, retryable: true, errorMsg: provider.label + ': akses ditolak untuk model/akun ini.' };
+          }
+          if (res.status >= 500) {
+            return { ok: false, retryable: true, errorMsg: provider.label + ': server sedang bermasalah (kode ' + res.status + ').' };
+          }
+          return { ok: false, retryable: true, errorMsg: provider.label + ': HTTP ' + res.status + (errText ? ' — ' + errText.slice(0, 150) : '') };
+        }
+
+        const data = await res.json();
+        const reply = data && data.choices && data.choices[0] && data.choices[0].message
+          ? data.choices[0].message.content
+          : null;
+
+        if (!reply) {
+          return { ok: false, retryable: true, errorMsg: provider.label + ': respons tidak sesuai format yang diharapkan.' };
+        }
+        return { ok: true, reply };
+
+      } catch (err) {
+        const isNetworkError = err instanceof TypeError;
+        return {
+          ok: false,
+          retryable: true,
+          errorMsg: isNetworkError
+            ? provider.label + ': gagal menghubungi server proxy (cek URL Worker / koneksi).'
+            : provider.label + ': ' + err.message
+        };
+      }
+    }
 
     async function callAI(userText) {
-      const userKey = getUserApiKey();
-      if (!userKey) {
-        addSystemNote('⚠️ Kamu belum memasukkan API key OpenAI. Klik ikon 🔑 di atas untuk memasukkan API key kamu sendiri.');
+      const configured = getConfiguredProviders();
+      if (configured.length === 0) {
+        addSystemNote('⚠️ Kamu belum memasukkan API key. Klik ikon 🔑 di atas dan isi minimal satu provider gratis (Groq/OpenRouter/Gemini).');
         openKeyPanel();
         return;
       }
@@ -4742,56 +4899,34 @@ function sgFallbackCopy(input, cb) {
         { role: 'user', content: userText }
       ];
 
-      try {
-        const res = await fetch(AI_CHAT_CONFIG.apiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            apiKey: userKey, // API key milik pengguna sendiri, hanya diteruskan oleh proxy ke OpenAI
-            model: AI_CHAT_CONFIG.model,
-            messages: messages,
-            temperature: 0.6,
-            max_tokens: 500
-          })
-        });
+      const failedNotes = [];
+      let result = null;
+      let usedProvider = null;
 
-        if (!res.ok) {
-          const errText = await res.text().catch(() => '');
-          if (res.status === 401 || res.status === 400) {
-            throw new Error('API key ditolak — kemungkinan key salah/kadaluarsa. Cek lagi lewat tombol 🔑.');
-          }
-          throw new Error('HTTP ' + res.status + (errText ? ' — ' + errText.slice(0, 200) : ''));
-        }
-
-        const data = await res.json();
-        const reply = data && data.choices && data.choices[0] && data.choices[0].message
-          ? data.choices[0].message.content
-          : null;
-
-        hideTyping();
-
-        if (!reply) {
-          addSystemNote('⚠️ Respons dari AI tidak sesuai format yang diharapkan.');
-          return;
-        }
-
-        addMessage(reply, 'bot');
-        history.push({ role: 'user', content: userText });
-        history.push({ role: 'assistant', content: reply });
-
-      } catch (err) {
-        hideTyping();
-        const isNetworkError = err instanceof TypeError; // biasanya berarti URL proxy salah/mati atau masalah koneksi
-        const msg = isNetworkError
-          ? '⚠️ Gagal menghubungi server AI. Kemungkinan URL proxy di AI_CHAT_CONFIG belum benar atau Worker belum di-deploy. Cek console browser (F12) untuk detail.'
-          : '⚠️ Gagal menghubungi AI: ' + err.message;
-        addSystemNote(msg);
-      } finally {
-        isSending = false;
-        sendBtn.disabled = false;
+      // Coba tiap provider yang sudah diisi key-nya, berurutan sesuai prioritas.
+      // Kalau satu gagal (limit/error), otomatis lanjut ke provider berikutnya.
+      for (const provider of configured) {
+        const key = getProviderKey(provider.id);
+        const r = await callProvider(provider, key, messages);
+        if (r.ok) { result = r; usedProvider = provider; break; }
+        failedNotes.push(r.errorMsg);
       }
+
+      hideTyping();
+
+      if (result && result.ok) {
+        addMessage(result.reply, 'bot');
+        history.push({ role: 'user', content: userText });
+        history.push({ role: 'assistant', content: result.reply });
+        if (configured.length > 1 && usedProvider && usedProvider.id !== configured[0].id) {
+          addSystemNote('ℹ️ Dijawab pakai ' + usedProvider.label + ' (provider utama sedang tidak tersedia).');
+        }
+      } else {
+        addSystemNote('⚠️ Semua provider gagal merespons:\n' + failedNotes.map(m => '• ' + m).join('\n'));
+      }
+
+      isSending = false;
+      sendBtn.disabled = false;
     }
 
     function handleSend(text) {
@@ -4807,9 +4942,9 @@ function sgFallbackCopy(input, cb) {
       if (greeted) return;
       greeted = true;
       addMessage(welcomeText, 'bot');
-      refreshKeyUI();
-      if (!getUserApiKey()) {
-        addSystemNote('🔑 Chat ini pakai API key OpenAI milik kamu sendiri. Klik ikon 🔑 di atas untuk memasukkannya (tersimpan aman hanya di browser kamu).');
+      buildKeyList();
+      if (getConfiguredProviders().length === 0) {
+        addSystemNote('🔑 Chat ini pakai API key AI gratis milik kamu sendiri (Groq/OpenRouter/Gemini). Klik ikon 🔑 di atas untuk memasukkannya — tersimpan aman hanya di browser kamu.');
       }
     }
 
@@ -4828,7 +4963,6 @@ function sgFallbackCopy(input, cb) {
       chip.addEventListener('click', () => handleSend(chip.getAttribute('data-q')));
     });
 
-    refreshKeyUI();
     return { greet };
   }
 
@@ -4844,10 +4978,7 @@ function sgFallbackCopy(input, cb) {
     welcomeText: 'Halo! 👋 Saya asisten AI Thunder Trade. Saya bisa bantu jelaskan hasil analisa trading kamu — win rate, profit factor, drawdown, portfolio score, dan lainnya. Silakan tanya apa saja, atau pilih salah satu topik cepat di bawah.',
     keyBtn: document.getElementById('aiChatKeyBtn'),
     keyPanel: document.getElementById('aiChatKeyPanel'),
-    keyInput: document.getElementById('aiChatKeyInput'),
-    keySave: document.getElementById('aiChatKeySave'),
-    keyClear: document.getElementById('aiChatKeyClear'),
-    keyStatus: document.getElementById('aiChatKeyStatus')
+    keyList: document.getElementById('aiChatKeyList')
   });
 
   function openPanel() {
@@ -4874,10 +5005,7 @@ function sgFallbackCopy(input, cb) {
     welcomeText: 'Halo! 👋 Tanya apa saja soal hasil analisa trading kamu di sini — win rate, profit factor, drawdown, sampai saran perbaikan.',
     keyBtn: document.getElementById('aiEmbeddedChatKeyBtn'),
     keyPanel: document.getElementById('aiEmbeddedChatKeyPanel'),
-    keyInput: document.getElementById('aiEmbeddedChatKeyInput'),
-    keySave: document.getElementById('aiEmbeddedChatKeySave'),
-    keyClear: document.getElementById('aiEmbeddedChatKeyClear'),
-    keyStatus: document.getElementById('aiEmbeddedChatKeyStatus')
+    keyList: document.getElementById('aiEmbeddedChatKeyList')
   });
   embeddedChat.greet(); // langsung sapa karena chatbox ini selalu terlihat di dalam card
 })();
