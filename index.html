@@ -5164,20 +5164,15 @@ function sgFallbackCopy(input, cb) {
     }
 
     // Dipanggil otomatis tiap kali ada statement/data trading baru yang diupload,
-    // supaya riwayat & konteks chat AI tidak tercampur dengan data lama.
+    // supaya riwayat & konteks chat AI tidak tercampur dengan data lama. Dilakukan
+    // secara senyap (tanpa notifikasi ke pengguna).
     function resetChat() {
-      const hadConversation = greeted || history.length > 0 || body.childElementCount > 0;
       history = [];
       isSending = false;
       if (sendBtn) sendBtn.disabled = false;
       hideTyping();
       body.innerHTML = '';
-      if (hadConversation) {
-        greeted = true; // tetap tandai sudah pernah disapa supaya welcome text tak diulang dari awal
-        addSystemNote('🔄 Data trading baru terdeteksi — riwayat chat direset supaya jawaban AI sesuai data terbaru.');
-      } else {
-        greeted = false; // belum pernah dibuka sama sekali, biarkan sapaan normal muncul saat dibuka
-      }
+      greeted = false; // supaya sapaan normal muncul lagi saat chat dibuka/dilihat berikutnya
     }
 
     sendBtn.addEventListener('click', () => handleSend());
@@ -5246,6 +5241,9 @@ function sgFallbackCopy(input, cb) {
   window.thunderResetAIChats = function () {
     floatingChat.resetChat();
     embeddedChat.resetChat();
+    // Chatbox tertanam selalu terlihat di dalam card, jadi langsung sapa ulang secara normal
+    // (bukan notifikasi reset) supaya tidak tampil kosong.
+    embeddedChat.greet();
   };
 })();
 </script>
