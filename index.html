@@ -3638,7 +3638,7 @@
   </div>
 
   <div style="text-align:center;padding:28px 16px 8px;font-size:12.5px;color:var(--text-faint)">
-    © 2026 Thunder Trade · <a href="/privacy.html" style="color:var(--text-muted)">Kebijakan Privasi</a>
+    © 2026 Thunder Trade · <a href="/privacy.html" style="color:var(--text-muted)">Kebijakan Privasi</a> · <a href="mailto:yasir.muhammad10@icloud.com" style="color:var(--text-muted)">yasir.muhammad10@icloud.com</a>
   </div>
 </div>
 
@@ -4157,6 +4157,68 @@ if (eqResetZoomBtn) {
   });
 }
 
+// Ambil satu elemen acak dari array — dipakai supaya narasi evaluasi AI
+// terasa berbeda-beda tiap kali dirender, bukan kalimat template yang itu-itu saja.
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Menyusun ringkasan evaluasi AI dengan gaya "berpikir keras" — menalar data
+// satu per satu (win rate -> profit factor -> drawdown -> risiko -> streak -> kesimpulan)
+// alih-alih langsung lompat ke skor akhir. Tiap segmen punya beberapa variasi kalimat
+// yang dipilih acak, jadi ringkasannya terasa dinamis & bukan hasil template statis.
+function buildThinkingSummary({ scoreLabel, winRate, pf, ddPercent, rrRatioNum, rrRatio, liqRiskScore, riskLabel, currentStreak, recoveryFactor }) {
+  const openers = [
+    'Coba kita telaah pelan-pelan —',
+    'Kalau dicermati satu per satu,',
+    'Oke, mari kita urai datanya dulu:',
+    'Sekilas dari data yang masuk,',
+    'Kita runut dari angka-angkanya ya —'
+  ];
+
+  const wrParts = winRate >= 55
+    ? [`win rate ${winRate}% ini tergolong solid`, `dengan win rate ${winRate}%, akun ini lebih sering menang daripada kalah`]
+    : winRate < 40
+    ? [`win rate cuma ${winRate}%, ini yang pertama bikin was-was`, `angka win rate ${winRate}% masih di bawah level yang nyaman`]
+    : [`win rate ${winRate}% ada di zona wajar — gak istimewa, tapi juga gak buruk`, `win rate ${winRate}% masih tergolong netral`];
+
+  const pfParts = pf >= 1.5
+    ? [`ditambah lagi Profit Factor ${pf.toFixed(2)}x, tanda tiap kerugian tertutup lebih dari cukup oleh profit`]
+    : (pf > 0 && pf < 1.2)
+    ? [`tapi Profit Factor cuma ${pf.toFixed(2)}x — margin antara profit dan loss masih tipis`]
+    : [`Profit Factor ${pf.toFixed(2)}x berada di kisaran menengah, belum menonjol ke salah satu arah`];
+
+  const ddParts = ddPercent > 25
+    ? [`yang bikin makin perlu hati-hati: drawdown sudah menembus ${ddPercent.toFixed(1)}%`]
+    : ddPercent < 15
+    ? [`kabar baiknya, drawdown masih terjaga di ${ddPercent.toFixed(1)}%`]
+    : [`drawdown ${ddPercent.toFixed(1)}% masih dalam batas yang bisa ditoleransi`];
+
+  const riskParts = liqRiskScore >= 51
+    ? [`digabung dengan skor risiko likuidasi ${liqRiskScore} (${riskLabel.toLowerCase()}), ini sinyal buat mulai kecilkan lot`]
+    : [`skor risiko likuidasi ${liqRiskScore} (${riskLabel.toLowerCase()}) juga masih relatif aman`];
+
+  const streakParts = currentStreak
+    ? (currentStreak.type === 'win'
+      ? [`Ditambah lagi hot streak ${currentStreak.count}x menang beruntun — momentumnya lagi bagus 🔥`]
+      : [`Cuma perlu diwaspadai, lagi ada ${currentStreak.count}x kalah beruntun, jadi jaga kepala dingin dulu`])
+    : [`Belum ada streak signifikan yang menonjol saat ini`];
+
+  const closers = [
+    `Kesimpulannya, akun ini ada di level <b>${scoreLabel}</b>.`,
+    `Jadi kalau ditotal semua faktor tadi, levelnya masuk kategori <b>${scoreLabel}</b>.`,
+    `Menimbang semua itu, skornya mendarat di level <b>${scoreLabel}</b>.`
+  ];
+
+  return [
+    pickRandom(openers),
+    pickRandom(wrParts) + ', ' + pickRandom(pfParts) + '.',
+    pickRandom(ddParts) + '. ' + pickRandom(riskParts) + '.',
+    pickRandom(streakParts) + '.',
+    pickRandom(closers)
+  ].join(' ');
+}
+
 function renderAIInsight(ctx) {
   window.thunderChatContext = ctx; // dipakai oleh widget Chat AI untuk menjawab pertanyaan
   const box = document.getElementById('aiInsightDynamic');
@@ -4190,15 +4252,14 @@ function renderAIInsight(ctx) {
   const bestSym = symEntries.length ? symEntries.reduce((a, b) => b[1] > a[1] ? b : a) : null;
   const worstSym = symEntries.length ? symEntries.reduce((a, b) => b[1] < a[1] ? b : a) : null;
 
-  // ===== Ringkasan (singkat) =====
-  let summary = `Akun ini ada di level <b>${scoreLabel}</b>. `;
-  if (currentStreak) {
-    summary += currentStreak.type === 'win'
-      ? `Lagi hot streak, ${currentStreak.count}x menang beruntun 🔥`
-      : `Lagi kena ${currentStreak.count}x kalah beruntun — tetap tenang & disiplin.`;
-  } else {
-    summary += `Terus pantau performa biar makin konsisten.`;
-  }
+  // ===== Ringkasan dinamis, gaya "mikir keras" =====
+  // Ganti ringkasan statis satu kalimat dengan narasi yang menalar data satu per satu
+  // (win rate -> PF -> drawdown -> risiko -> streak -> kesimpulan skor), dengan variasi
+  // kalimat yang dipilih acak tiap render supaya tidak terasa seperti template tetap.
+  const summary = buildThinkingSummary({
+    scoreLabel, winRate, pf, ddPercent, rrRatioNum, rrRatio,
+    liqRiskScore, riskLabel, currentStreak, recoveryFactor
+  });
 
   const chips = [
     ['🎯', 'Win Rate', winRate + '%', '#3b82f6'],
@@ -5405,6 +5466,8 @@ function sgFallbackCopy(input, cb) {
       'Kamu adalah asisten AI di website Thunder Trade, sebuah analyzer trading forex untuk statement MT4/MT5.',
       'Tugasmu adalah menjawab pertanyaan pengguna seputar HASIL ANALISA TRADING mereka (saldo, equity, deposit/withdrawal, win rate, profit factor, drawdown, portfolio score, risk:reward, simbol yang ditradingkan, lot, fear & greed, dsb) dengan bahasa Indonesia yang santai, jelas, dan mudah dipahami trader pemula.',
       'PENTING: Semua data yang tercantum di bagian "DATA TRADING PENGGUNA" di bawah ini SUDAH TERSEDIA lengkap — termasuk saldo, equity, deposit, withdrawal, ROI, lot, dan detail per simbol. Jangan pernah bilang data tersebut "tidak tersedia" atau minta pengguna memberikannya lagi; langsung pakai angka-angka itu untuk menjawab. Kalau pengguna menanyakan sesuatu yang benar-benar tidak ada di data (misal harga real-time atau berita pasar), baru sampaikan itu di luar cakupanmu.',
+      'Gaya jawab: "berpikir keras" secara singkat — sebelum kasih kesimpulan/evaluasi, telusuri dulu angka-angka yang relevan satu-dua langkah (misal: sebut dulu win rate & profit factor-nya, kaitkan dengan drawdown/risiko, baru simpulkan). Ini bukan berarti bertele-tele, cukup 1-2 kalimat penalaran sebelum kesimpulan, bukan langsung lempar vonis mentah.',
+      'Variasikan cara membuka & merangkai kalimat tiap kali menjawab (jangan selalu mulai dengan pola/frasa yang sama seperti "Akun ini..." atau template yang itu-itu saja) supaya terasa natural, bukan jawaban robotik yang berulang.',
       'Jawab singkat dan langsung ke inti (maksimal beberapa paragraf pendek atau poin-poin), jangan bertele-tele.',
       'Jangan memberi saran finansial yang menjanjikan profit pasti — selalu ingatkan bahwa trading forex mengandung risiko.',
       '',
