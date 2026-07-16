@@ -2450,6 +2450,28 @@
     line-height: 1.5;
     margin: 8px 0 0;
   }
+  .signal-view .ticket-shot {
+    margin: 14px 0 4px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--sg-line-strong);
+    background: var(--sg-bg-deep);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .signal-view .ticket-shot svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .signal-view .ticket-shot-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--sg-faint);
+    text-align: center;
+    padding: 6px 8px 8px;
+    background: var(--sg-bg-deep);
+  }
   .signal-view .ticket-link-row {
     display: flex;
     align-items: center;
@@ -3269,7 +3291,7 @@
           Daftar Copy Signal <span class="btn-arrow">→</span>
         </button>
         <button type="button" class="affiliate-btn btn-tutorial-cta" onclick="openTutorialView()">
-          <span class="affiliate-btn-ico">📘</span> Tutorial Ambil Data MT4/5 <span class="btn-arrow">→</span>
+          Tutorial Ambil Data MT4/5 <span class="btn-arrow">→</span>
         </button>
       </div>
     </div>
@@ -4859,27 +4881,7 @@ function renderDashboard(data) {
     <div class="hero">
       <div class="eyebrow">Tutorial Singkat</div>
       <h1>Ambil laporan riwayat trading<br><em>dari MetaTrader 4 / 5</em>.</h1>
-      <p>Thunder Trade butuh file laporan (statement) dalam format <strong>.htm / .html</strong> yang diekspor langsung dari terminal MT4 atau MT5 kamu. Ikuti 4 langkah singkat berikut untuk mendapatkan file itu.</p>
-    </div>
-
-    <div class="trust-bar">
-      <div class="trust-item">
-        <span class="ti-icon">🖥️</span>
-        <span class="ti-text">Langsung dari Aplikasi MT4/MT5</span>
-      </div>
-      <div class="trust-item">
-        <span class="ti-icon">🔒</span>
-        <span class="ti-text">File Diproses di Browser Saja</span>
-      </div>
-      <div class="trust-item">
-        <span class="ti-icon">⚡</span>
-        <span class="ti-text">Gratis, Kurang dari 1 Menit</span>
-      </div>
-    </div>
-
-    <div class="disclosure">
-      <span>ℹ️</span>
-      <span>File laporan (statement) yang kamu ekspor <strong>tidak pernah diunggah ke server manapun</strong> — Thunder Trade membacanya langsung di browser kamu (perangkatmu sendiri) untuk membuat analisa.</span>
+      <p>Ekspor statement (.htm/.html) dari terminal MT4/MT5 kamu dalam 4 langkah singkat. File diproses langsung di browser, tidak diunggah ke server manapun.</p>
     </div>
 
     <div class="section-label">Langkah-Langkah Export Laporan</div>
@@ -4895,6 +4897,33 @@ function renderDashboard(data) {
           <span class="ticket-badge">MT4 &amp; MT5</span>
         </div>
         <p class="ticket-desc">Di terminal MT4/MT5 (aplikasi desktop), buka panel <strong>Toolbox</strong> di bagian bawah layar (tekan <strong>Ctrl+T</strong> kalau tersembunyi), lalu klik tab <strong>"Account History"</strong> (MT4) atau <strong>"History"</strong> (MT5).</p>
+        <div class="ticket-shot">
+          <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi panel Toolbox dengan tab Account History">
+            <rect x="0" y="0" width="400" height="190" fill="var(--sg-card)"/>
+            <rect x="0" y="0" width="400" height="26" fill="rgba(0,0,0,0.28)"/>
+            <circle cx="16" cy="13" r="4.5" fill="#ff5f57"/>
+            <circle cx="31" cy="13" r="4.5" fill="#febc2e"/>
+            <circle cx="46" cy="13" r="4.5" fill="#28c840"/>
+            <text x="200" y="17" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-muted)">MetaTrader 4 — Demo Account</text>
+            <rect x="14" y="42" width="372" height="60" rx="6" fill="rgba(255,255,255,0.02)" stroke="var(--sg-line)"/>
+            <text x="24" y="66" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-faint)">Trade</text>
+            <text x="66" y="66" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-faint)">Exposure</text>
+            <text x="126" y="66" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-faint)">Accounts</text>
+            <rect x="190" y="52" width="112" height="22" rx="5" fill="var(--sg-green-glow)" stroke="var(--sg-green-bright)" stroke-width="1.4"/>
+            <text x="246" y="67" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="var(--sg-green-bright)">Account History</text>
+            <text x="316" y="66" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-faint)">Journal</text>
+            <line x1="14" y1="80" x2="386" y2="80" stroke="var(--sg-line)" stroke-width="1"/>
+            <text x="24" y="94" font-family="JetBrains Mono, monospace" font-size="9.5" fill="var(--sg-faint)">Ticket   Time   Type   Volume   Symbol   Price   Profit</text>
+            <path d="M246 74 L246 92 M240 86 L246 92 L252 86" stroke="var(--sg-green-bright)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="14" y="112" width="372" height="24" rx="6" fill="rgba(255,255,255,0.03)" stroke="var(--sg-line)"/>
+            <text x="24" y="128" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--sg-muted)">⌨ Ctrl</text>
+            <rect x="70" y="116" width="1" height="16" fill="var(--sg-line-strong)"/>
+            <text x="82" y="128" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--sg-muted)">+ T</text>
+            <text x="130" y="128" font-family="Inter, sans-serif" font-size="10" fill="var(--sg-faint)">untuk memunculkan panel Toolbox bila tersembunyi</text>
+            <text x="200" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="var(--sg-green-bright)">👆 Klik tab "Account History" / "History"</text>
+          </svg>
+          <div class="ticket-shot-cap">ILUSTRASI · PANEL TOOLBOX MT4/MT5</div>
+        </div>
       </div>
 
       <div class="ticket">
@@ -4906,6 +4935,37 @@ function renderDashboard(data) {
           <span class="ticket-badge">MT4 &amp; MT5</span>
         </div>
         <p class="ticket-desc">Klik kanan di area riwayat tersebut → pilih periode di menu <strong>"Custom Period"</strong> atau langsung pilih <strong>"All History"</strong> supaya seluruh riwayat trading kamu ikut ter-export.</p>
+        <div class="ticket-shot">
+          <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi menu klik kanan memilih All History">
+            <rect x="0" y="0" width="400" height="190" fill="var(--sg-card)"/>
+            <rect x="0" y="0" width="400" height="26" fill="rgba(0,0,0,0.28)"/>
+            <circle cx="16" cy="13" r="4.5" fill="#ff5f57"/>
+            <circle cx="31" cy="13" r="4.5" fill="#febc2e"/>
+            <circle cx="46" cy="13" r="4.5" fill="#28c840"/>
+            <text x="200" y="17" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-muted)">Account History</text>
+            <rect x="14" y="40" width="180" height="140" rx="6" fill="rgba(255,255,255,0.02)" stroke="var(--sg-line)"/>
+            <text x="24" y="60" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">Ticket  Time  Symbol  Profit</text>
+            <line x1="24" y1="70" x2="184" y2="70" stroke="var(--sg-line)"/>
+            <text x="24" y="86" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">1029..  09:14  EURUSD  +12.4</text>
+            <text x="24" y="102" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">1029..  10:02  XAUUSD  -6.1</text>
+            <path d="M170 92 l-6 -5 l0 3 l-10 0 l0 4 l10 0 l0 3 z" fill="var(--sg-gold)"/>
+            <g transform="translate(198,58)">
+              <rect x="0" y="0" width="188" height="112" rx="6" fill="#0f1c17" stroke="var(--sg-line-strong)" stroke-width="1.2"/>
+              <rect x="0" y="0" width="188" height="20" fill="rgba(255,255,255,0.03)"/>
+              <text x="8" y="14" font-family="Inter, sans-serif" font-size="9.5" fill="var(--sg-muted)">Last 3 Months</text>
+              <text x="8" y="34" font-family="Inter, sans-serif" font-size="9.5" fill="var(--sg-muted)">Last Month</text>
+              <text x="8" y="54" font-family="Inter, sans-serif" font-size="9.5" fill="var(--sg-muted)">Current Week</text>
+              <rect x="2" y="60" width="184" height="20" rx="4" fill="var(--sg-green-glow)" stroke="var(--sg-green-bright)" stroke-width="1"/>
+              <text x="8" y="74" font-family="Inter, sans-serif" font-weight="600" font-size="9.5" fill="var(--sg-green-bright)">All History</text>
+              <rect x="2" y="84" width="184" height="20" rx="4" fill="var(--sg-gold-soft)" stroke="var(--sg-gold)" stroke-width="1"/>
+              <text x="8" y="98" font-family="Inter, sans-serif" font-weight="600" font-size="9.5" fill="var(--sg-gold)">Custom Period...</text>
+            </g>
+            <circle cx="176" cy="118" r="3" fill="var(--sg-ink)"/>
+            <path d="M176 118 l14 30 l-6 -2 l-4 8 l-6 -3 l4 -8 l-8 0 z" fill="var(--sg-ink)" opacity="0.85"/>
+            <text x="200" y="184" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--sg-muted)">👆 Klik kanan lalu pilih "All History" atau "Custom Period"</text>
+          </svg>
+          <div class="ticket-shot-cap">ILUSTRASI · MENU KLIK KANAN</div>
+        </div>
       </div>
 
       <div class="ticket">
@@ -4917,6 +4977,38 @@ function renderDashboard(data) {
           <span class="ticket-badge">MT4 &amp; MT5</span>
         </div>
         <p class="ticket-desc">Klik kanan lagi di area riwayat → pilih <strong>"Report"</strong> → <strong>"Save as Report"</strong> (MT4) atau ikon <strong>Save/printer</strong> di pojok panel (MT5). File akan tersimpan dalam format <strong>.htm</strong>.</p>
+        <div class="ticket-shot">
+          <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi menu Report lalu Save as Report">
+            <rect x="0" y="0" width="400" height="190" fill="var(--sg-card)"/>
+            <rect x="0" y="0" width="400" height="26" fill="rgba(0,0,0,0.28)"/>
+            <circle cx="16" cy="13" r="4.5" fill="#ff5f57"/>
+            <circle cx="31" cy="13" r="4.5" fill="#febc2e"/>
+            <circle cx="46" cy="13" r="4.5" fill="#28c840"/>
+            <text x="200" y="17" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-muted)">Account History</text>
+            <rect x="14" y="40" width="150" height="140" rx="6" fill="rgba(255,255,255,0.02)" stroke="var(--sg-line)"/>
+            <text x="22" y="58" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">Ticket  Profit</text>
+            <line x1="22" y1="66" x2="156" y2="66" stroke="var(--sg-line)"/>
+            <text x="22" y="82" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">1029..  +12.4</text>
+            <text x="22" y="98" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-faint)">1029..  -6.1</text>
+            <g transform="translate(168,56)">
+              <rect x="0" y="0" width="100" height="80" rx="6" fill="#0f1c17" stroke="var(--sg-line-strong)" stroke-width="1.2"/>
+              <text x="10" y="18" font-family="Inter, sans-serif" font-size="9.5" fill="var(--sg-muted)">Print</text>
+              <text x="10" y="36" font-family="Inter, sans-serif" font-size="9.5" fill="var(--sg-muted)">Print Preview</text>
+              <rect x="4" y="44" width="92" height="20" rx="4" fill="var(--sg-green-glow)" stroke="var(--sg-green-bright)" stroke-width="1"/>
+              <text x="10" y="58" font-family="Inter, sans-serif" font-weight="600" font-size="9.5" fill="var(--sg-green-bright)">Report ▸</text>
+            </g>
+            <g transform="translate(266,66)">
+              <rect x="0" y="0" width="122" height="72" rx="6" fill="#0f1c17" stroke="var(--sg-gold)" stroke-width="1.3"/>
+              <rect x="3" y="4" width="116" height="22" rx="4" fill="var(--sg-gold-soft)" stroke="var(--sg-gold)" stroke-width="1"/>
+              <text x="10" y="19" font-family="Inter, sans-serif" font-weight="700" font-size="9.5" fill="var(--sg-gold)">💾 Save as Report</text>
+              <text x="10" y="42" font-family="Inter, sans-serif" font-size="9" fill="var(--sg-muted)">Save as Detailed...</text>
+              <text x="10" y="60" font-family="Inter, sans-serif" font-size="9" fill="var(--sg-muted)">Open XML (.xlsx)</text>
+            </g>
+            <rect x="150" y="150" width="120" height="24" rx="5" fill="rgba(255,255,255,0.03)" stroke="var(--sg-line-strong)"/>
+            <text x="210" y="166" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--sg-green-bright)">ReportHistory.htm</text>
+          </svg>
+          <div class="ticket-shot-cap">ILUSTRASI · REPORT → SAVE AS REPORT (.HTM)</div>
+        </div>
       </div>
 
       <div class="ticket">
@@ -4928,6 +5020,30 @@ function renderDashboard(data) {
           <span class="ticket-badge">SELESAI</span>
         </div>
         <p class="ticket-desc">Kembali ke halaman utama Thunder Trade, lalu drag &amp; drop file <strong>.htm</strong> tadi ke kotak upload, atau klik kotaknya untuk memilih file secara manual.</p>
+        <div class="ticket-shot">
+          <svg viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrasi drag and drop file htm ke kotak upload Thunder Trade">
+            <rect x="0" y="0" width="400" height="190" fill="var(--sg-card)"/>
+            <rect x="0" y="0" width="400" height="26" fill="rgba(0,0,0,0.28)"/>
+            <circle cx="16" cy="13" r="4.5" fill="#ff5f57"/>
+            <circle cx="31" cy="13" r="4.5" fill="#febc2e"/>
+            <circle cx="46" cy="13" r="4.5" fill="#28c840"/>
+            <text x="200" y="17" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="var(--sg-muted)">Thunder Trade</text>
+            <g transform="translate(30,44)">
+              <rect x="0" y="0" width="70" height="52" rx="6" fill="rgba(255,255,255,0.03)" stroke="var(--sg-line-strong)"/>
+              <path d="M14 12 h30 l8 8 v24 h-38 z" fill="none" stroke="var(--sg-green-bright)" stroke-width="1.4"/>
+              <path d="M44 12 v8 h8" fill="none" stroke="var(--sg-green-bright)" stroke-width="1.4"/>
+              <text x="35" y="38" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--sg-green-bright)">.htm</text>
+            </g>
+            <path d="M108 70 C160 40, 190 40, 230 66" fill="none" stroke="var(--sg-gold)" stroke-width="2" stroke-dasharray="5 4"/>
+            <path d="M222 58 l14 6 l-8 12 z" fill="var(--sg-gold)"/>
+            <rect x="230" y="42" width="146" height="120" rx="10" fill="rgba(255,255,255,0.02)" stroke="var(--sg-green-bright)" stroke-width="1.6" stroke-dasharray="6 5"/>
+            <path d="M303 88 v26 M291 100 l12 -12 l12 12" fill="none" stroke="var(--sg-green-bright)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="303" y="134" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="10.5" fill="var(--sg-ink)">Drag &amp; drop di sini</text>
+            <text x="303" y="148" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="var(--sg-faint)">atau klik untuk pilih file</text>
+            <text x="200" y="182" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="var(--sg-muted)">Analisa muncul otomatis setelah file ter-upload</text>
+          </svg>
+          <div class="ticket-shot-cap">ILUSTRASI · UPLOAD KE KOTAK DROPZONE</div>
+        </div>
         <div class="ticket-actions">
           <button type="button" class="btn-open" onclick="closeTutorialView()" style="border:none;cursor:pointer;width:100%">Upload File Sekarang →</button>
         </div>
