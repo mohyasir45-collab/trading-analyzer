@@ -2698,15 +2698,34 @@
     box-shadow: 0 0 5px #f59e0b;
   }
   .ai-chat-key-panel {
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    padding: 12px 14px;
-    background: rgba(234, 179, 8, 0.06);
+    display: grid;
+    grid-template-rows: 0fr;
+    background: var(--card-bg-soft);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
+    transition: grid-template-rows 0.3s cubic-bezier(.4,0,.2,1), border-color 0.3s ease;
   }
-  .ai-chat-key-panel.open { display: flex; }
+  .ai-chat-key-panel-inner {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 14px;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.22s ease, transform 0.22s ease, padding 0.3s ease;
+  }
+  .ai-chat-key-panel.open {
+    grid-template-rows: 1fr;
+    border-color: var(--border-strong);
+  }
+  .ai-chat-key-panel.open .ai-chat-key-panel-inner {
+    padding: 13px 14px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.28s ease 0.05s, transform 0.28s ease 0.05s, padding 0.3s ease;
+  }
   .ai-chat-key-panel p {
     margin: 0;
     font-size: 11px;
@@ -2739,18 +2758,20 @@
     border: none;
     cursor: pointer;
     flex-shrink: 0;
+    transition: filter 0.2s, transform 0.15s;
   }
   .ai-chat-key-save {
     background: linear-gradient(135deg, #3b82f6, #1fbf5f);
     color: #fff;
   }
   .ai-chat-key-save:hover { filter: brightness(1.1); }
+  .ai-chat-key-save:active { transform: scale(0.96); }
   .ai-chat-key-clear {
     background: var(--track-bg);
     color: var(--text-muted);
     border: 1px solid var(--border);
   }
-  .ai-chat-key-clear:hover { color: var(--text-primary); }
+  .ai-chat-key-clear:hover { color: var(--text-primary); border-color: var(--border-hover); }
   .ai-chat-key-status {
     font-size: 10.5px;
     color: var(--text-muted);
@@ -2761,23 +2782,41 @@
   .ai-chat-key-status .dot-ok { width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 5px #00ff88; }
   .ai-chat-key-status .dot-off { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 5px #f59e0b; }
 
-  .ai-chat-key-list { display: flex; flex-direction: column; gap: 10px; }
+  .ai-chat-key-list { display: flex; flex-direction: column; gap: 6px; }
   .ai-chat-key-provider {
-    padding-top: 9px;
-    border-top: 1px dashed var(--border);
+    padding: 7px 9px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
   }
-  .ai-chat-key-provider:first-child { padding-top: 0; border-top: none; }
+  .ai-chat-key-provider:hover,
+  .ai-chat-key-provider:not(.collapsed) {
+    background: var(--track-bg);
+    border-color: var(--border);
+  }
   .ai-chat-key-provider-head {
     display: flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 6px;
     font-size: 11.5px;
     font-weight: 600;
     color: var(--text-secondary);
     cursor: pointer;
     user-select: none;
+    flex-wrap: wrap;
+    row-gap: 4px;
   }
+  .ai-chat-key-provider:not(.collapsed) .ai-chat-key-provider-head { margin-bottom: 6px; }
+  .ai-chat-key-provider-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #f59e0b;
+    box-shadow: 0 0 5px #f59e0b;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .ai-chat-key-provider-dot.ok { background: #00ff88; box-shadow: 0 0 5px #00ff88; }
   .ai-chat-key-provider-toggle {
     background: none;
     border: none;
@@ -2796,7 +2835,7 @@
     display: grid;
     grid-template-rows: 1fr;
     opacity: 1;
-    transition: grid-template-rows 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+    transition: grid-template-rows 0.22s ease, opacity 0.18s ease;
   }
   .ai-chat-key-fields > div { overflow: hidden; }
   .ai-chat-key-provider.collapsed .ai-chat-key-fields {
@@ -2826,6 +2865,17 @@
     border-radius: 999px;
     background: rgba(59, 130, 246, 0.16);
     color: #60a5fa;
+  }
+  /* ===== Responsif: panel API key menyesuaikan layar sempit ===== */
+  @media (max-width: 480px) {
+    .ai-chat-key-provider-link { margin-left: 0; order: 3; flex-basis: 100%; }
+    .ai-chat-key-row { flex-wrap: wrap; }
+    .ai-chat-key-input { flex: 1 1 100%; }
+    .ai-chat-key-save, .ai-chat-key-clear { flex: 1; padding: 8px 10px; }
+  }
+  @media (hover: none) {
+    /* Perangkat sentuh tidak punya hover — andalkan tap (pinned-open) */
+    .ai-chat-key-provider-toggle { opacity: 0.85; }
   }
 
   .ai-chat-body {
@@ -3288,8 +3338,10 @@
             <button class="ai-chat-key-btn" id="aiEmbeddedChatKeyBtn" type="button" aria-label="Atur API Key OpenAI kamu" title="Atur API Key OpenAI kamu" style="margin-left:auto;">🔑</button>
           </div>
           <div class="ai-chat-key-panel" id="aiEmbeddedChatKeyPanel">
-            <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
-            <div class="ai-chat-key-list" id="aiEmbeddedChatKeyList"></div>
+            <div class="ai-chat-key-panel-inner">
+              <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
+              <div class="ai-chat-key-list" id="aiEmbeddedChatKeyList"></div>
+            </div>
           </div>
           <div class="ai-chat-body ai-embedded-chat-body" id="aiEmbeddedChatBody"></div>
           <div class="ai-chat-suggestions" id="aiEmbeddedChatSuggestions">
@@ -4598,8 +4650,10 @@ function sgFallbackCopy(input, cb) {
     <button class="ai-chat-close" id="aiChatCloseBtn" aria-label="Tutup chat">✕</button>
   </div>
   <div class="ai-chat-key-panel" id="aiChatKeyPanel">
-    <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
-    <div class="ai-chat-key-list" id="aiChatKeyList"></div>
+    <div class="ai-chat-key-panel-inner">
+      <p>Chat ini bisa pakai beberapa provider AI <strong>gratis</strong> sekaligus. Isi salah satu atau lebih API key di bawah — kalau satu provider kena limit, sistem otomatis coba provider lain.</p>
+      <div class="ai-chat-key-list" id="aiChatKeyList"></div>
+    </div>
   </div>
 
   <div class="ai-chat-body" id="aiChatBody"></div>
@@ -4785,6 +4839,7 @@ function sgFallbackCopy(input, cb) {
         if (hasKeyAlready) row.classList.add('collapsed');
         row.innerHTML = `
           <div class="ai-chat-key-provider-head">
+            <span class="ai-chat-key-provider-dot${hasKeyAlready ? ' ok' : ''}"></span>
             <span>${p.label}</span>
             <span class="ai-chat-key-provider-badge${p.badge === 'Berbayar' ? ' paid' : ''}">${p.badge}</span>
             <a class="ai-chat-key-provider-link" href="${p.keyLink}" target="_blank" rel="noopener" onclick="event.stopPropagation()">dapatkan key ↗</a>
@@ -4801,6 +4856,7 @@ function sgFallbackCopy(input, cb) {
             </div>
           </div>
         `;
+        const pDot = row.querySelector('.ai-chat-key-provider-dot');
         const pHead = row.querySelector('.ai-chat-key-provider-head');
         const pToggle = row.querySelector('.ai-chat-key-provider-toggle');
         const pInput = row.querySelector('.ai-chat-key-input');
@@ -4833,7 +4889,7 @@ function sgFallbackCopy(input, cb) {
         });
         pInput.addEventListener('click', (e) => e.stopPropagation());
 
-        providerRowRefs[p.id] = { input: pInput, status: pStatus };
+        providerRowRefs[p.id] = { input: pInput, status: pStatus, dot: pDot };
         keyList.appendChild(row);
       });
       refreshKeyUI();
@@ -4846,6 +4902,7 @@ function sgFallbackCopy(input, cb) {
         const ref = providerRowRefs[p.id];
         if (!ref) return;
         const key = getProviderKey(p.id);
+        if (ref.dot) ref.dot.classList.toggle('ok', !!key);
         if (!key) {
           ref.status.innerHTML = '<span class="dot-off"></span>Belum ada API key';
         } else {
@@ -4863,9 +4920,55 @@ function sgFallbackCopy(input, cb) {
     function closeKeyPanel() {
       if (keyPanel) keyPanel.classList.remove('open');
     }
+
+    // ===== Auto view (hover) & auto hide untuk panel API key =====
+    // Di perangkat dengan mouse: arahkan cursor ke ikon 🔑 → panel otomatis terbuka.
+    // Menjauhkan cursor dari ikon maupun kotak panel → panel otomatis tertutup (dengan sedikit jeda
+    // supaya cursor sempat berpindah dari tombol ke panel tanpa panel keburu menutup).
+    // Klik tetap berfungsi (terutama untuk perangkat sentuh yang tidak punya hover) dan akan
+    // "mengunci" panel tetap terbuka sampai diklik lagi atau area lain diklik.
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    let keyPanelPinned = false;
+    let keyPanelCloseTimer = null;
+    function clearKeyPanelCloseTimer() {
+      if (keyPanelCloseTimer) { clearTimeout(keyPanelCloseTimer); keyPanelCloseTimer = null; }
+    }
+    function scheduleKeyPanelClose() {
+      clearKeyPanelCloseTimer();
+      keyPanelCloseTimer = setTimeout(() => {
+        if (!keyPanelPinned) closeKeyPanel();
+      }, 260);
+    }
+
     if (keyBtn) keyBtn.addEventListener('click', () => {
-      if (keyPanel && keyPanel.classList.contains('open')) closeKeyPanel();
-      else openKeyPanel();
+      if (keyPanel && keyPanel.classList.contains('open') && keyPanelPinned) {
+        keyPanelPinned = false;
+        closeKeyPanel();
+      } else {
+        keyPanelPinned = true;
+        clearKeyPanelCloseTimer();
+        openKeyPanel();
+      }
+    });
+
+    if (supportsHover) {
+      if (keyBtn) {
+        keyBtn.addEventListener('mouseenter', () => { clearKeyPanelCloseTimer(); openKeyPanel(); });
+        keyBtn.addEventListener('mouseleave', scheduleKeyPanelClose);
+      }
+      if (keyPanel) {
+        keyPanel.addEventListener('mouseenter', clearKeyPanelCloseTimer);
+        keyPanel.addEventListener('mouseleave', scheduleKeyPanelClose);
+      }
+    }
+
+    // Tap/klik di luar ikon kunci & panel → panel otomatis tertutup (berguna juga di layar sentuh).
+    document.addEventListener('click', (e) => {
+      if (!keyPanel || !keyPanel.classList.contains('open')) return;
+      if (keyBtn && keyBtn.contains(e.target)) return;
+      if (keyPanel.contains(e.target)) return;
+      keyPanelPinned = false;
+      closeKeyPanel();
     });
 
     // Panggil satu provider tertentu. Return { ok, reply, errorMsg, retryable }
