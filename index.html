@@ -556,6 +556,46 @@
   }
   .risk-note b { color: var(--text-secondary); }
 
+  /* ===== Fear & Greed Index Trader ===== */
+  .fg-section::before { background: linear-gradient(90deg, #ff3366, #f97316, #eab308, #84cc16, #00ff88); opacity: 0.75; }
+  .fg-gauge-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding-right: 36px;
+    border-right: 1px solid var(--border);
+  }
+  .fg-gauge { width: 180px; }
+  .fg-gauge svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .fg-gauge-value {
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--fgc, #eab308);
+    line-height: 1;
+    margin-top: -6px;
+    text-shadow: 0 0 18px color-mix(in srgb, var(--fgc, #eab308) 55%, transparent);
+  }
+  .fg-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--card-bg-soft);
+    border: 1px solid var(--border);
+    border-left: 3px solid #eab308;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 12px 0 8px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-tertiary);
+  }
+  .fg-note b { color: var(--text-secondary); }
+  @media (max-width: 620px) {
+    .fg-gauge-wrap { padding-right: 0; border-right: none; }
+  }
+
   /* ===== Thunder AI ===== */
   .ai-insight-section {
     background: var(--card-bg);
@@ -3365,6 +3405,12 @@
       <div class="score-section" id="portfolioScore"></div>
 
       <div class="section-header">
+        <h2 class="section-title">Indeks Fear &amp; Greed Trader</h2>
+      </div>
+      <div class="score-section fg-section" id="fgSection"></div>
+      <div class="fg-note" id="fgNote"></div>
+
+      <div class="section-header">
         <h2 class="section-title">Risiko Likuidasi Akun</h2>
       </div>
       <div class="score-section risk-section" id="liqRiskSection"></div>
@@ -4175,6 +4221,34 @@ function renderAIInsight(ctx) {
   `;
 }
 
+function fgPolar(cx, cy, r, angleDeg) {
+  const rad = angleDeg * Math.PI / 180;
+  return { x: cx + r * Math.cos(rad), y: cy - r * Math.sin(rad) };
+}
+function fgScoreToAngle(score) { return 180 - score * 1.8; }
+function fgZoneArc(cx, cy, r, scoreStart, scoreEnd) {
+  const a1 = fgScoreToAngle(scoreStart);
+  const a2 = fgScoreToAngle(scoreEnd);
+  const p1 = fgPolar(cx, cy, r, a1);
+  const p2 = fgPolar(cx, cy, r, a2);
+  const largeArc = Math.abs(a1 - a2) > 180 ? 1 : 0;
+  return `M ${p1.x.toFixed(2)} ${p1.y.toFixed(2)} A ${r} ${r} 0 ${largeArc} 1 ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
+}
+function fgColorForScore(s) {
+  if (s >= 76) return '#00ff88';
+  if (s >= 56) return '#84cc16';
+  if (s >= 44) return '#eab308';
+  if (s >= 24) return '#f97316';
+  return '#ff3366';
+}
+function fgLabelForScore(s) {
+  if (s >= 76) return 'Extreme Greed';
+  if (s >= 56) return 'Greed';
+  if (s >= 44) return 'Netral';
+  if (s >= 24) return 'Fear';
+  return 'Extreme Fear';
+}
+
 function renderDashboard(data) {
   charts.forEach(c => c.destroy());
   charts = [];
@@ -4282,6 +4356,123 @@ function renderDashboard(data) {
     </div>
   `;
 
+  // ===== Indeks Fear & Greed Trader =====
+  // Bukan sentimen pasar seperti index crypto, tapi mengukur pola PERILAKU trading
+  // akun ini sendiri: apakah cenderung emosional/serakah (greed) atau panik/ragu (fear).
+  const fgClamp = v => Math.max(0, Math.min(100, v));
+
+  // 1) Momentum performa: win rate belakangan vs win rate keseluruhan
+  const fgRecentN = Math.max(5, Math.round(trades.length * 0.2));
+  const fgRecentTrades = trades.slice(-fgRecentN);
+  const fgRecentWins = fgRecentTrades.filter(t => t.pl > 0).length;
+  const fgRecentWinRate = fgRecentTrades.length ? (fgRecentWins / fgRecentTrades.length * 100) : winRate;
+  const momentumScore = fgClamp(50 + (fgRecentWinRate - winRate) * 1.4);
+
+  // 2) Overconfidence: rata-rata lot setelah profit dibanding setelah loss
+  const lotAfterWin = [], lotAfterLoss = [];
+  for (let i = 1; i < trades.length; i++) {
+    const lot = trades[i].lot || 0;
+    if (lot <= 0) continue;
+    if (trades[i - 1].pl > 0) lotAfterWin.push(lot); else lotAfterLoss.push(lot);
+  }
+  const avgLotAfterWin = lotAfterWin.length ? lotAfterWin.reduce((a, b) => a + b, 0) / lotAfterWin.length : 0;
+  const avgLotAfterLoss = lotAfterLoss.length ? lotAfterLoss.reduce((a, b) => a + b, 0) / lotAfterLoss.length : 0;
+  const overconfidenceRatio = avgLotAfterLoss > 0 ? (avgLotAfterWin / avgLotAfterLoss) : (avgLotAfterWin > 0 ? 1.5 : 1);
+  const overconfidenceScore = fgClamp(50 + (overconfidenceRatio - 1) * 55);
+
+  // 3) Overtrading: frekuensi transaksi (trade/hari) sepertiga akhir vs sepertiga awal periode
+  const fgValidDates = trades.map(t => parseTradeDate(t.date)).filter(d => !isNaN(d.getTime()));
+  let freqScore = 50, freqRatio = 1, hasFreqData = false;
+  if (fgValidDates.length >= 6) {
+    const third = Math.max(1, Math.floor(fgValidDates.length / 3));
+    const earlyDates = fgValidDates.slice(0, third);
+    const recentDates = fgValidDates.slice(-third);
+    const spanDays = arr => Math.max(1, (arr[arr.length - 1] - arr[0]) / 86400000);
+    const earlyFreq = earlyDates.length / spanDays(earlyDates);
+    const recentFreq = recentDates.length / spanDays(recentDates);
+    freqRatio = earlyFreq > 0 ? (recentFreq / earlyFreq) : 1;
+    freqScore = fgClamp(50 + (freqRatio - 1) * 30);
+    hasFreqData = true;
+  }
+
+  // 4) Revenge trading: rata-rata lot tepat setelah 2x kalah beruntun vs rata-rata lot normal
+  const allLots = trades.map(t => t.lot || 0).filter(l => l > 0);
+  const avgLotAll = allLots.length ? allLots.reduce((a, b) => a + b, 0) / allLots.length : 0;
+  const lotAfterLossStreak = [];
+  let lossRun = 0;
+  for (let i = 0; i < trades.length; i++) {
+    lossRun = trades[i].pl <= 0 ? lossRun + 1 : 0;
+    if (lossRun >= 2 && trades[i + 1] && trades[i + 1].lot > 0) lotAfterLossStreak.push(trades[i + 1].lot);
+  }
+  const avgLotAfterLossStreak = lotAfterLossStreak.length ? lotAfterLossStreak.reduce((a, b) => a + b, 0) / lotAfterLossStreak.length : avgLotAll;
+  const revengeRatio = avgLotAll > 0 ? (avgLotAfterLossStreak / avgLotAll) : 1;
+  const revengeScore = fgClamp(50 - (revengeRatio - 1) * 65);
+
+  // 5) Tekanan drawdown terhadap modal (stabilitas emosi)
+  const ddPressureScore = fgClamp(50 - ddPercent * 1.4);
+
+  const fgScore = Math.round(
+    momentumScore * 0.22 +
+    overconfidenceScore * 0.20 +
+    freqScore * 0.18 +
+    revengeScore * 0.22 +
+    ddPressureScore * 0.18
+  );
+  const fgColor = fgColorForScore(fgScore);
+  const fgLabel = fgLabelForScore(fgScore);
+  const fgNeedleDeg = (fgScore / 100 * 180) - 90;
+
+  // Geometri gauge: pusat (100,102), radius arc 78 supaya ada ruang aman di semua sisi
+  // (jarum, pivot, dan label emoji tidak saling tumpuk).
+  const fgCx = 100, fgCy = 102, fgR = 78;
+  const fgZonesDef = [[0, 24], [24, 44], [44, 56], [56, 76], [76, 100]];
+  const fgArcsSVG = fgZonesDef.map(([s, e]) =>
+    `<path d="${fgZoneArc(fgCx, fgCy, fgR, s, e)}" fill="none" stroke="${fgColorForScore((s + e) / 2)}" stroke-width="15" stroke-linecap="butt" />`
+  ).join('');
+  const fgEmojis = [[12, '😱'], [34, '😨'], [50, '😐'], [66, '🙂'], [88, '🤑']];
+  const fgEmojiSVG = fgEmojis.map(([sc, em]) => {
+    const p = fgPolar(fgCx, fgCy, fgR + 17, fgScoreToAngle(sc));
+    return `<text x="${p.x.toFixed(2)}" y="${p.y.toFixed(2)}" font-size="13" text-anchor="middle" dominant-baseline="middle">${em}</text>`;
+  }).join('');
+
+  document.getElementById('fgSection').innerHTML = `
+    <div class="fg-gauge-wrap">
+      <div class="fg-gauge">
+        <svg viewBox="0 0 200 118">
+          ${fgArcsSVG}
+          ${fgEmojiSVG}
+          <g class="fg-needle">
+            <animateTransform attributeName="transform" type="rotate" from="-90 ${fgCx} ${fgCy}" to="${fgNeedleDeg} ${fgCx} ${fgCy}" dur="1s" calcMode="spline" keySplines="0.22 1 0.36 1" keyTimes="0;1" fill="freeze" />
+            <line x1="${fgCx}" y1="${fgCy}" x2="${fgCx}" y2="${fgCy - fgR + 16}" stroke="var(--text-primary)" stroke-width="4" stroke-linecap="round" />
+          </g>
+          <circle cx="${fgCx}" cy="${fgCy}" r="7" fill="var(--bg-elevated)" stroke="var(--text-primary)" stroke-width="2" />
+        </svg>
+      </div>
+      <div class="fg-gauge-value" style="--fgc:${fgColor}">${fgScore}</div>
+      <div class="score-badge" style="--sc:${fgColor}">${fgLabel}</div>
+      <div class="score-caption">Skala 0 (Extreme Fear) – 100 (Extreme Greed)</div>
+    </div>
+    <div class="score-breakdown">
+      ${scoreRow('📈', 'Momentum Performa', Math.round(fgRecentWinRate) + '% vs ' + winRate + '% (win rate)', momentumScore, fgColorForScore(momentumScore))}
+      ${scoreRow('💰', 'Lot Setelah Profit vs Loss', avgLotAfterWin.toFixed(2) + ' vs ' + avgLotAfterLoss.toFixed(2) + ' lot', overconfidenceScore, fgColorForScore(overconfidenceScore))}
+      ${scoreRow('⚡', 'Frekuensi Trading', hasFreqData ? freqRatio.toFixed(2) + 'x dari awal periode' : 'Data belum cukup', freqScore, fgColorForScore(freqScore))}
+      ${scoreRow('🔥', 'Pola Revenge Trading', avgLotAfterLossStreak.toFixed(2) + ' vs ' + avgLotAll.toFixed(2) + ' lot rata-rata', revengeScore, fgColorForScore(revengeScore))}
+      ${scoreRow('🛡️', 'Tekanan Drawdown', ddPercent.toFixed(1) + '%', ddPressureScore, fgColorForScore(ddPressureScore))}
+    </div>
+  `;
+
+  const fgDrivers = [
+    { label: 'momentum performa belakangan', score: momentumScore },
+    { label: 'pembesaran lot setelah profit', score: overconfidenceScore },
+    { label: 'perubahan frekuensi trading', score: freqScore },
+    { label: 'pola revenge trading setelah kalah beruntun', score: revengeScore },
+    { label: 'tekanan drawdown terhadap modal', score: ddPressureScore }
+  ];
+  const fgTopDriver = fgDrivers.reduce((a, b) => (Math.abs(b.score - 50) > Math.abs(a.score - 50) ? b : a));
+  const fgTilt = fgTopDriver.score > 52 ? 'greed (serakah/overconfident)' : (fgTopDriver.score < 48 ? 'fear (ragu/panik)' : 'netral');
+  document.getElementById('fgNote').innerHTML =
+    `<span>🧠</span><span><b>Ini bukan sentimen pasar</b>, tapi cermin pola perilaku trading dari akun ini sendiri — dihitung dari perubahan ukuran lot, frekuensi transaksi, dan reaksi setelah menang/kalah. Faktor paling dominan saat ini: <b>${fgTopDriver.label}</b>, cenderung mengarah ke <b>${fgTilt}</b>. Gunakan sebagai bahan refleksi disiplin trading, bukan sinyal beli/jual.</span>`;
+
   document.getElementById('accountLine').innerHTML = (accountName ? `<b>${accountName}</b>` : '') + (accountNumber ? ` • ${accountNumber}` : '') + (currency ? ` • ${currency}` : '') + '<div class="neon-indicator"></div>';
 
   const totalDeposit = deposits.reduce((s, d) => s + d.amount, 0);
@@ -4373,7 +4564,8 @@ function renderDashboard(data) {
     winStreaks, lossStreaks, currentStreak,
     liqRiskScore: finalScore, riskLabel, riskColor,
     worstLossAmount, worstLossCount, bufferPercent,
-    symTotals, totalPl, initialDeposit, currentEquity
+    symTotals, totalPl, initialDeposit, currentEquity,
+    fgScore, fgLabel, fgTopDriverLabel: fgTopDriver.label, fgTilt
   });
 
   renderTrades();
@@ -4655,7 +4847,7 @@ function sgFallbackCopy(input, cb) {
   Promise.all([minDelay, pageLoaded]).then(revealPage);
   setTimeout(revealPage, 2600); // safety fallback
 
-  const revealSelectors = '.feature-card, .score-section, .chart-box, .mini-chart-box, .consecutive-container, .summary-row, .stat-toggle, .risk-note, .recent-trades-container, .calendar-box, .section-header, .ai-insight-section, .dashboard-group-header';
+  const revealSelectors = '.feature-card, .score-section, .chart-box, .mini-chart-box, .consecutive-container, .summary-row, .stat-toggle, .risk-note, .fg-note, .recent-trades-container, .calendar-box, .section-header, .ai-insight-section, .dashboard-group-header';
   document.querySelectorAll(revealSelectors).forEach(el => el.classList.add('reveal-up'));
 
   // Reveal dua arah: elemen fade/slide masuk saat discroll ke bawah,
@@ -4839,6 +5031,7 @@ function sgFallbackCopy(input, cb) {
       `- Recovery Factor: ${ctx.recoveryFactor ? ctx.recoveryFactor.toFixed(2) : '-'}x`,
       `- Total P/L: ${fmtID(ctx.totalPl)}`,
       `- Estimasi Risiko Likuidasi: ${ctx.liqRiskScore}/100 (${ctx.riskLabel})`,
+      ctx.fgScore !== undefined ? `- Indeks Fear & Greed Trader: ${ctx.fgScore}/100 (${ctx.fgLabel}), faktor paling dominan: ${ctx.fgTopDriverLabel} (cenderung ${ctx.fgTilt})` : '',
       ctx.currentStreak ? `- Rentetan saat ini: ${ctx.currentStreak.count}x ${ctx.currentStreak.type === 'win' ? 'menang' : 'kalah'} beruntun` : ''
     ].filter(Boolean).join('\n');
   }
