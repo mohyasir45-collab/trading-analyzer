@@ -4553,18 +4553,46 @@ function renderDashboard(data) {
 
   // ===== AI Insight =====
   const symTotals = {};
-  trades.forEach(t => { symTotals[t.item] = (symTotals[t.item] || 0) + t.pl; });
+  const symLotTotals = {};
+  trades.forEach(t => {
+    symTotals[t.item] = (symTotals[t.item] || 0) + t.pl;
+    symLotTotals[t.item] = (symLotTotals[t.item] || 0) + (t.lot || 0);
+  });
+  const symEntries = Object.entries(symTotals).sort((a, b) => b[1] - a[1]);
+  const topSymbols = symEntries.slice(0, 3);
+  const worstSymbols = symEntries.slice(-3).reverse().filter(s => !topSymbols.includes(s));
+  const bestTrade = trades.length ? trades.reduce((a, b) => (b.pl > a.pl ? b : a), trades[0]) : null;
+  const worstTrade = trades.length ? trades.reduce((a, b) => (b.pl < a.pl ? b : a), trades[0]) : null;
+  const firstTradeDate = validDates.length ? validDates[0] : null;
+  const lastTradeDate = validDates.length ? validDates[validDates.length - 1] : null;
+  const tradingSpanDays = (firstTradeDate && lastTradeDate) ? Math.max(1, Math.round((lastTradeDate - firstTradeDate) / 86400000)) : 0;
 
   renderAIInsight({
+    // Identitas akun & saldo/equity lengkap
+    accountName, accountNumber, currency,
+    balance, equity, closedPL, floatingPL,
+    openTradeCount: openTrades.length,
+    totalDeposit, totalWithdrawal, netDeposit, roiFromDeposit,
+    initialDeposit, currentEquity,
+    // Statistik performa
     portfolioScore, scoreLabel, scoreColor,
     winRate, wins, losses, tradeCount: trades.length,
     pf, rrRatioNum, rrRatio,
-    avgWinProfit, avgLossProfit,
+    avgWinProfit, avgLossProfit, grossWin, grossLoss,
     ddPercent, maxDD, recoveryFactor,
     winStreaks, lossStreaks, currentStreak,
     liqRiskScore: finalScore, riskLabel, riskColor,
     worstLossAmount, worstLossCount, bufferPercent,
-    symTotals, totalPl, initialDeposit, currentEquity,
+    totalPl,
+    // Detail per simbol & transaksi ekstrem
+    symTotals, symLotTotals, topSymbols, worstSymbols,
+    bestTrade, worstTrade,
+    // Rentang waktu data & lot
+    firstTradeDate: firstTradeDate ? firstTradeDate.toISOString().slice(0, 10) : null,
+    lastTradeDate: lastTradeDate ? lastTradeDate.toISOString().slice(0, 10) : null,
+    tradingSpanDays,
+    avgLotAll, avgLotAfterWin, avgLotAfterLoss,
+    // Fear & Greed
     fgScore, fgLabel, fgTopDriverLabel: fgTopDriver.label, fgTilt
   });
 
@@ -5019,30 +5047,55 @@ function sgFallbackCopy(input, cb) {
     if (!ctx) {
       return 'Pengguna belum meng-upload statement MT4/MT5, jadi belum ada data analisa trading yang tersedia. Jika pengguna bertanya soal hasil trading, minta mereka upload file statement terlebih dahulu di halaman utama.';
     }
+    const fmtSym = (arr) => arr.length ? arr.map(([sym, pl]) => `${sym} (${fmtID(pl)})`).join(', ') : '-';
     return [
-      'Berikut data hasil analisa trading pengguna (statement MT4/MT5 yang sudah di-upload):',
+      'Berikut data LENGKAP hasil analisa trading pengguna (statement MT4/MT5 yang sudah di-upload). Gunakan semua angka di bawah ini kalau relevan dengan pertanyaan pengguna — jangan bilang datanya tidak tersedia kalau sudah tercantum di sini:',
+      '',
+      '## Info Akun & Saldo',
+      ctx.accountName || ctx.accountNumber ? `- Akun: ${ctx.accountName || '-'}${ctx.accountNumber ? ' (' + ctx.accountNumber + ')' : ''}${ctx.currency ? ' • ' + ctx.currency : ''}` : '',
+      `- Saldo (Balance): ${ctx.balance !== undefined ? fmtID(ctx.balance) : '-'}`,
+      `- Ekuitas (Equity) saat statement diambil: ${ctx.equity !== undefined ? fmtID(ctx.equity) : '-'}`,
+      `- Estimasi Equity Saat Ini (modal awal + P/L tertutup): ${fmtID(ctx.currentEquity)}`,
+      `- P/L Tertutup (Closed P/L): ${fmtID(ctx.closedPL)}`,
+      `- P/L Mengambang (Floating P/L, posisi masih terbuka): ${fmtID(ctx.floatingPL)}`,
+      `- Jumlah Posisi Terbuka Saat Ini: ${ctx.openTradeCount}`,
+      `- Modal Awal (Initial Deposit): ${fmtID(ctx.initialDeposit)}`,
+      `- Total Deposit: ${fmtID(ctx.totalDeposit)} | Total Withdrawal: ${fmtID(ctx.totalWithdrawal)} | Net Deposit: ${fmtID(ctx.netDeposit)}`,
+      `- ROI dari Total Deposit: ${ctx.roiFromDeposit !== undefined ? ctx.roiFromDeposit.toFixed(2) + '%' : '-'}`,
+      '',
+      '## Performa Trading',
       `- Portfolio Score: ${ctx.portfolioScore}/100 (${ctx.scoreLabel})`,
       `- Win Rate: ${ctx.winRate}% (${ctx.wins} menang, ${ctx.losses} kalah dari ${ctx.tradeCount} transaksi)`,
       `- Profit Factor: ${ctx.pf ? ctx.pf.toFixed(2) : '-'}`,
       `- Risk:Reward Ratio: ${ctx.rrRatio}`,
-      `- Rata-rata Profit saat Menang: ${fmtID(ctx.avgWinProfit)}`,
-      `- Rata-rata Loss saat Kalah: ${fmtID(ctx.avgLossProfit)}`,
+      `- Rata-rata Profit saat Menang: ${fmtID(ctx.avgWinProfit)} | Rata-rata Loss saat Kalah: ${fmtID(ctx.avgLossProfit)}`,
+      `- Total Profit Kotor: ${fmtID(ctx.grossWin)} | Total Loss Kotor: ${fmtID(ctx.grossLoss)}`,
+      `- Total P/L Keseluruhan: ${fmtID(ctx.totalPl)}`,
       `- Max Drawdown: ${fmtID(ctx.maxDD)} (${ctx.ddPercent ? ctx.ddPercent.toFixed(1) : '-'}% dari modal awal)`,
       `- Recovery Factor: ${ctx.recoveryFactor ? ctx.recoveryFactor.toFixed(2) : '-'}x`,
-      `- Total P/L: ${fmtID(ctx.totalPl)}`,
-      `- Estimasi Risiko Likuidasi: ${ctx.liqRiskScore}/100 (${ctx.riskLabel})`,
+      `- Estimasi Risiko Likuidasi Akun: ${ctx.liqRiskScore}/100 (${ctx.riskLabel})`,
+      ctx.currentStreak ? `- Rentetan saat ini: ${ctx.currentStreak.count}x ${ctx.currentStreak.type === 'win' ? 'menang' : 'kalah'} beruntun` : '',
       ctx.fgScore !== undefined ? `- Indeks Fear & Greed Trader: ${ctx.fgScore}/100 (${ctx.fgLabel}), faktor paling dominan: ${ctx.fgTopDriverLabel} (cenderung ${ctx.fgTilt})` : '',
-      ctx.currentStreak ? `- Rentetan saat ini: ${ctx.currentStreak.count}x ${ctx.currentStreak.type === 'win' ? 'menang' : 'kalah'} beruntun` : ''
+      '',
+      '## Detail Transaksi & Simbol',
+      `- Rentang Waktu Data: ${ctx.firstTradeDate || '-'} s/d ${ctx.lastTradeDate || '-'} (${ctx.tradingSpanDays} hari)`,
+      `- Rata-rata Lot per Transaksi: ${ctx.avgLotAll ? ctx.avgLotAll.toFixed(2) : '-'} (setelah profit: ${ctx.avgLotAfterWin ? ctx.avgLotAfterWin.toFixed(2) : '-'}, setelah loss: ${ctx.avgLotAfterLoss ? ctx.avgLotAfterLoss.toFixed(2) : '-'})`,
+      `- Simbol Paling Profitable: ${fmtSym(ctx.topSymbols)}`,
+      `- Simbol Paling Merugikan: ${fmtSym(ctx.worstSymbols)}`,
+      ctx.bestTrade ? `- Transaksi Terbaik: ${ctx.bestTrade.item} • ${fmtID(ctx.bestTrade.pl)} • lot ${ctx.bestTrade.lot} • ${ctx.bestTrade.date}` : '',
+      ctx.worstTrade ? `- Transaksi Terburuk: ${ctx.worstTrade.item} • ${fmtID(ctx.worstTrade.pl)} • lot ${ctx.worstTrade.lot} • ${ctx.worstTrade.date}` : ''
     ].filter(Boolean).join('\n');
   }
 
   function buildSystemPrompt() {
     return [
       'Kamu adalah asisten AI di website Thunder Trade, sebuah analyzer trading forex untuk statement MT4/MT5.',
-      'Tugasmu adalah menjawab pertanyaan pengguna seputar HASIL ANALISA TRADING mereka (win rate, profit factor, drawdown, portfolio score, risk:reward, dsb) dengan bahasa Indonesia yang santai, jelas, dan mudah dipahami trader pemula.',
+      'Tugasmu adalah menjawab pertanyaan pengguna seputar HASIL ANALISA TRADING mereka (saldo, equity, deposit/withdrawal, win rate, profit factor, drawdown, portfolio score, risk:reward, simbol yang ditradingkan, lot, fear & greed, dsb) dengan bahasa Indonesia yang santai, jelas, dan mudah dipahami trader pemula.',
+      'PENTING: Semua data yang tercantum di bagian "DATA TRADING PENGGUNA" di bawah ini SUDAH TERSEDIA lengkap — termasuk saldo, equity, deposit, withdrawal, ROI, lot, dan detail per simbol. Jangan pernah bilang data tersebut "tidak tersedia" atau minta pengguna memberikannya lagi; langsung pakai angka-angka itu untuk menjawab. Kalau pengguna menanyakan sesuatu yang benar-benar tidak ada di data (misal harga real-time atau berita pasar), baru sampaikan itu di luar cakupanmu.',
       'Jawab singkat dan langsung ke inti (maksimal beberapa paragraf pendek atau poin-poin), jangan bertele-tele.',
       'Jangan memberi saran finansial yang menjanjikan profit pasti — selalu ingatkan bahwa trading forex mengandung risiko.',
       '',
+      '=== DATA TRADING PENGGUNA ===',
       buildTradingContextSummary()
     ].join('\n');
   }
