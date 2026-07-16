@@ -2715,7 +2715,7 @@
   }
   .ai-chat-key-panel a { color: #1fbf5f; text-decoration: none; }
   .ai-chat-key-panel a:hover { text-decoration: underline; }
-  .ai-chat-key-row { display: flex; gap: 7px; }
+  .ai-chat-key-row { display: flex; gap: 7px; margin-top: 2px; }
   .ai-chat-key-input {
     flex: 1;
     min-width: 0;
@@ -2775,6 +2775,33 @@
     font-size: 11.5px;
     font-weight: 600;
     color: var(--text-secondary);
+    cursor: pointer;
+    user-select: none;
+  }
+  .ai-chat-key-provider-toggle {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 4px;
+    margin-left: 4px;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: transform 0.25s ease, color 0.2s ease;
+  }
+  .ai-chat-key-provider-toggle:hover { color: var(--text-primary); }
+  .ai-chat-key-provider.collapsed .ai-chat-key-provider-toggle { transform: rotate(-90deg); }
+  .ai-chat-key-fields {
+    display: grid;
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition: grid-template-rows 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+  }
+  .ai-chat-key-fields > div { overflow: hidden; }
+  .ai-chat-key-provider.collapsed .ai-chat-key-fields {
+    grid-template-rows: 0fr;
+    opacity: 0;
   }
   .ai-chat-key-provider-badge {
     font-size: 9.5px;
@@ -4753,19 +4780,29 @@ function sgFallbackCopy(input, cb) {
       AI_PROVIDERS.forEach(p => {
         const row = document.createElement('div');
         row.className = 'ai-chat-key-provider';
+        // Provider yang sudah punya key otomatis di-collapse (auto-hide) supaya panel ringkas.
+        const hasKeyAlready = !!getProviderKey(p.id);
+        if (hasKeyAlready) row.classList.add('collapsed');
         row.innerHTML = `
           <div class="ai-chat-key-provider-head">
             <span>${p.label}</span>
             <span class="ai-chat-key-provider-badge${p.badge === 'Berbayar' ? ' paid' : ''}">${p.badge}</span>
-            <a class="ai-chat-key-provider-link" href="${p.keyLink}" target="_blank" rel="noopener">dapatkan key ↗</a>
+            <a class="ai-chat-key-provider-link" href="${p.keyLink}" target="_blank" rel="noopener" onclick="event.stopPropagation()">dapatkan key ↗</a>
+            <button class="ai-chat-key-provider-toggle" type="button" aria-label="Tampilkan/sembunyikan kolom API key ${p.label}" title="Tampilkan/sembunyikan">▾</button>
           </div>
-          <div class="ai-chat-key-row">
-            <input type="password" class="ai-chat-key-input" placeholder="${p.keyHint}" autocomplete="off" spellcheck="false">
-            <button class="ai-chat-key-save" type="button">Simpan</button>
-            <button class="ai-chat-key-clear" type="button">Hapus</button>
+          <div class="ai-chat-key-fields">
+            <div>
+              <div class="ai-chat-key-row">
+                <input type="password" class="ai-chat-key-input" placeholder="${p.keyHint}" autocomplete="off" spellcheck="false">
+                <button class="ai-chat-key-save" type="button">Simpan</button>
+                <button class="ai-chat-key-clear" type="button">Hapus</button>
+              </div>
+              <div class="ai-chat-key-status"></div>
+            </div>
           </div>
-          <div class="ai-chat-key-status"></div>
         `;
+        const pHead = row.querySelector('.ai-chat-key-provider-head');
+        const pToggle = row.querySelector('.ai-chat-key-provider-toggle');
         const pInput = row.querySelector('.ai-chat-key-input');
         const pSave = row.querySelector('.ai-chat-key-save');
         const pClear = row.querySelector('.ai-chat-key-clear');
@@ -4773,19 +4810,28 @@ function sgFallbackCopy(input, cb) {
 
         pInput.value = getProviderKey(p.id);
 
-        pSave.addEventListener('click', () => {
+        function toggleCollapse() { row.classList.toggle('collapsed'); }
+        pHead.addEventListener('click', toggleCollapse);
+
+        pSave.addEventListener('click', (e) => {
+          e.stopPropagation();
           const val = (pInput.value || '').trim();
           if (!val) { addSystemNote('⚠️ Isi dulu API key ' + p.label + ' sebelum menyimpan.'); return; }
           setProviderKey(p.id, val);
           refreshKeyUI();
           addSystemNote('✅ API key ' + p.label + ' tersimpan di browser kamu.');
+          // Auto-hide kolom API setelah tersimpan supaya panel tetap ringkas.
+          setTimeout(() => row.classList.add('collapsed'), 500);
         });
-        pClear.addEventListener('click', () => {
+        pClear.addEventListener('click', (e) => {
+          e.stopPropagation();
           setProviderKey(p.id, '');
           pInput.value = '';
+          row.classList.remove('collapsed');
           refreshKeyUI();
           addSystemNote('🗑️ API key ' + p.label + ' dihapus dari browser kamu.');
         });
+        pInput.addEventListener('click', (e) => e.stopPropagation());
 
         providerRowRefs[p.id] = { input: pInput, status: pStatus };
         keyList.appendChild(row);
