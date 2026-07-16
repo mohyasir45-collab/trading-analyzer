@@ -2584,16 +2584,51 @@
   #aiChatBubble:active { transform: scale(0.95); }
   #aiChatBubble .ai-chat-badge {
     position: absolute;
-    top: -3px;
-    right: -3px;
-    width: 14px;
-    height: 14px;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  #aiChatBubble.has-unread .ai-chat-badge { display: flex; }
+  #aiChatBubble .ai-chat-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #ff3366;
+    opacity: 0.55;
+    animation: aiBadgePing 1.6s cubic-bezier(0,0,.2,1) infinite;
+  }
+  #aiChatBubble .ai-chat-badge::after {
+    content: '';
+    position: relative;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #ff3366;
     border: 2px solid var(--bg);
-    display: none;
+    box-shadow: 0 0 6px rgba(255, 51, 102, 0.8);
   }
-  #aiChatBubble.has-unread .ai-chat-badge { display: block; }
+  #aiChatBubble.has-unread { animation: aiChatPulse 2.6s ease-in-out infinite, aiChatAttentionBounce 2.4s ease-in-out 0.3s 2; }
+  @keyframes aiBadgePing {
+    0% { transform: scale(0.85); opacity: 0.65; }
+    75%, 100% { transform: scale(2.1); opacity: 0; }
+  }
+  @keyframes aiChatAttentionBounce {
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-7px); }
+    35% { transform: translateY(0); }
+    45% { transform: translateY(-3px); }
+    55% { transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #aiChatBubble .ai-chat-badge::before { animation: none; opacity: 0.55; }
+    #aiChatBubble.has-unread { animation: none; }
+  }
   @keyframes aiChatPulse {
     0%, 100% { box-shadow: 0 6px 20px -4px rgba(31, 191, 95, 0.5), 0 0 0 1px rgba(255,255,255,0.08) inset; }
     50% { box-shadow: 0 6px 28px -2px rgba(31, 191, 95, 0.85), 0 0 0 1px rgba(255,255,255,0.14) inset; }
@@ -2696,6 +2731,20 @@
     border-radius: 50%;
     background: #f59e0b;
     box-shadow: 0 0 5px #f59e0b;
+    z-index: 1;
+  }
+  .ai-chat-key-btn.needs-key::before {
+    content: '';
+    position: absolute;
+    top: 3px; right: 3px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    opacity: 0.6;
+    animation: aiBadgePing 1.8s cubic-bezier(0,0,.2,1) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ai-chat-key-btn.needs-key::before { animation: none; opacity: 0.5; }
   }
   .ai-chat-key-panel {
     display: grid;
@@ -3603,6 +3652,18 @@ function handleFile(file) {
         fileBar.style.display = 'flex';
         dropzone.style.display = 'none';
         dashboard.style.display = 'block';
+        // Data baru berhasil dimuat → auto-reset chat AI (floating & embedded) supaya
+        // jawabannya tidak tercampur konteks data statement yang lama.
+        if (typeof window.thunderResetAIChats === 'function') window.thunderResetAIChats();
+        // Beri notifikasi menarik perhatian di bubble chat AI (kalau sedang tertutup) supaya
+        // pengguna sadar ada insight baru yang siap ditanyakan soal data yang baru diupload.
+        const aiBubbleEl = document.getElementById('aiChatBubble');
+        const aiPanelEl = document.getElementById('aiChatPanel');
+        if (aiBubbleEl && (!aiPanelEl || !aiPanelEl.classList.contains('open'))) {
+          aiBubbleEl.classList.remove('has-unread');
+          void aiBubbleEl.offsetWidth; // restart animasi walau class sebelumnya masih ada
+          aiBubbleEl.classList.add('has-unread');
+        }
       } catch (err) {
         loadingBox.style.display = 'none';
         dropzone.style.display = 'block';
@@ -3982,6 +4043,11 @@ document.querySelectorAll('.range-btn').forEach(btn => {
 const eqResetZoomBtn = document.getElementById('eqResetZoom');
 if (eqResetZoomBtn) {
   eqResetZoomBtn.addEventListener('click', () => {
+    // Reset zoom/geser DAN kembalikan filter range ke "Semua" supaya equity curve
+    // menampilkan seluruh data lagi, bukan cuma melepas zoom di rentang yang sedang aktif.
+    eqCurrentRange = 'all';
+    document.querySelectorAll('.range-btn').forEach(b => b.classList.toggle('active', b.dataset.range === 'all'));
+    renderEquityChart();
     if (equityChartInstance) equityChartInstance.resetZoom();
   });
 }
@@ -5097,6 +5163,23 @@ function sgFallbackCopy(input, cb) {
       }
     }
 
+    // Dipanggil otomatis tiap kali ada statement/data trading baru yang diupload,
+    // supaya riwayat & konteks chat AI tidak tercampur dengan data lama.
+    function resetChat() {
+      const hadConversation = greeted || history.length > 0 || body.childElementCount > 0;
+      history = [];
+      isSending = false;
+      if (sendBtn) sendBtn.disabled = false;
+      hideTyping();
+      body.innerHTML = '';
+      if (hadConversation) {
+        greeted = true; // tetap tandai sudah pernah disapa supaya welcome text tak diulang dari awal
+        addSystemNote('🔄 Data trading baru terdeteksi — riwayat chat direset supaya jawaban AI sesuai data terbaru.');
+      } else {
+        greeted = false; // belum pernah dibuka sama sekali, biarkan sapaan normal muncul saat dibuka
+      }
+    }
+
     sendBtn.addEventListener('click', () => handleSend());
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -5112,7 +5195,7 @@ function sgFallbackCopy(input, cb) {
       chip.addEventListener('click', () => handleSend(chip.getAttribute('data-q')));
     });
 
-    return { greet };
+    return { greet, resetChat };
   }
 
   // ===== Instance 1: widget mengambang (bubble di pojok kanan bawah) =====
@@ -5157,6 +5240,13 @@ function sgFallbackCopy(input, cb) {
     keyList: document.getElementById('aiEmbeddedChatKeyList')
   });
   embeddedChat.greet(); // langsung sapa karena chatbox ini selalu terlihat di dalam card
+
+  // Diekspos secara global supaya bisa dipanggil dari alur upload/parsing data (handleFile)
+  // untuk auto-reset percakapan AI setiap kali statement/data trading baru dimuat.
+  window.thunderResetAIChats = function () {
+    floatingChat.resetChat();
+    embeddedChat.resetChat();
+  };
 })();
 </script>
 
