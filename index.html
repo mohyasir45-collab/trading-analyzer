@@ -8,9 +8,6 @@
 
 <meta name="google-site-verification" content="wY5O3XAuljnlYKtXrAyL1rm3fQbXw9q5XZa4uQPDxQI" />
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8913946367013796"
-     crossorigin="anonymous"></script>
-
 <!-- ===== SEO Meta Tags ===== -->
 <meta name="description" content="Thunder Trade adalah analyzer trading forex gratis untuk statement MT4/MT5: cek win rate, profit factor, equity curve, drawdown, dan Portfolio Score otomatis. Partner afiliasi resmi TradersFamily untuk daftar copy signal forex terpercaya.">
 <meta name="keywords" content="trading forex, traders family, tradersfamily, copy signal forex, copy trading forex, analisa trading forex, analisa MT4, analisa MT5, statement MT4 MT5, win rate forex, profit factor, equity curve trading, portfolio score trading, signal forex, robot trading forex, evaluasi akun trading, thunder trade">
@@ -2009,6 +2006,47 @@
     .affiliate-links { width: 100%; }
     .affiliate-btn { flex: 1 1 auto; justify-content: center; }
   }
+
+  /* ===== Teks affiliate: tersembunyi, muncul saat hover kartu ===== */
+  .affiliate-hover-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .affiliate-desc {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px;
+    text-align: center;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s ease,
+                transform 0.4s ease,
+                margin 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .affiliate-hover-group:hover .affiliate-desc,
+  .affiliate-hover-group:focus-within .affiliate-desc {
+    max-height: 160px;
+    opacity: 1;
+    transform: translateY(0);
+    margin: 0 auto 18px;
+  }
+  /* Kartu di bawah ikut bergeser naik/turun mengikuti perubahan tinggi teks */
+  #dropzone {
+    transition: margin-top 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .affiliate-desc,
+    #dropzone {
+      transition: none;
+    }
+  }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
 
@@ -2522,6 +2560,429 @@
   }
   .signal-view footer .footer-back-btn:hover { color: var(--sg-green-bright); }
 
+  /* ===== AI Chat Widget ===== */
+  #aiChatBubble {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #3b82f6, #1fbf5f);
+    box-shadow: 0 6px 20px -4px rgba(31, 191, 95, 0.5), 0 0 0 1px rgba(255,255,255,0.08) inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 9000;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: aiChatPulse 2.6s ease-in-out infinite;
+  }
+  #aiChatBubble:hover { transform: scale(1.07); }
+  #aiChatBubble:active { transform: scale(0.95); }
+  #aiChatBubble .ai-chat-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #ff3366;
+    border: 2px solid var(--bg);
+    display: none;
+  }
+  #aiChatBubble.has-unread .ai-chat-badge { display: block; }
+  @keyframes aiChatPulse {
+    0%, 100% { box-shadow: 0 6px 20px -4px rgba(31, 191, 95, 0.5), 0 0 0 1px rgba(255,255,255,0.08) inset; }
+    50% { box-shadow: 0 6px 28px -2px rgba(31, 191, 95, 0.85), 0 0 0 1px rgba(255,255,255,0.14) inset; }
+  }
+
+  #aiChatPanel {
+    position: fixed;
+    right: 20px;
+    bottom: 88px;
+    width: 360px;
+    max-width: calc(100vw - 32px);
+    height: 520px;
+    max-height: calc(100vh - 140px);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 20px 60px -12px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9001;
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  #aiChatPanel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .ai-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.14), rgba(31,191,95,0.14));
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .ai-chat-header-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #3b82f6, #1fbf5f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .ai-chat-header-text { flex: 1; min-width: 0; }
+  .ai-chat-header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  .ai-chat-header-sub {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ai-chat-header-sub .dot-live {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #00ff88; flex-shrink: 0;
+    box-shadow: 0 0 6px #00ff88;
+  }
+  .ai-chat-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .ai-chat-close:hover { background: var(--track-bg); color: var(--text-primary); }
+  .ai-chat-key-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 15px;
+    cursor: pointer;
+    padding: 4px 7px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .ai-chat-key-btn:hover { background: var(--track-bg); color: var(--text-primary); }
+  .ai-chat-key-btn.needs-key::after {
+    content: '';
+    position: absolute;
+    top: 3px; right: 3px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    box-shadow: 0 0 5px #f59e0b;
+  }
+  .ai-chat-key-panel {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(234, 179, 8, 0.06);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .ai-chat-key-panel.open { display: flex; }
+  .ai-chat-key-panel p {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-tertiary);
+  }
+  .ai-chat-key-panel a { color: #1fbf5f; text-decoration: none; }
+  .ai-chat-key-panel a:hover { text-decoration: underline; }
+  .ai-chat-key-row { display: flex; gap: 7px; }
+  .ai-chat-key-input {
+    flex: 1;
+    min-width: 0;
+    background: var(--track-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .ai-chat-key-input::placeholder { color: var(--text-faint); font-family: 'Inter', sans-serif; }
+  .ai-chat-key-input:focus { border-color: #1fbf5f; }
+  .ai-chat-key-save, .ai-chat-key-clear {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .ai-chat-key-save {
+    background: linear-gradient(135deg, #3b82f6, #1fbf5f);
+    color: #fff;
+  }
+  .ai-chat-key-save:hover { filter: brightness(1.1); }
+  .ai-chat-key-clear {
+    background: var(--track-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .ai-chat-key-clear:hover { color: var(--text-primary); }
+  .ai-chat-key-status {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ai-chat-key-status .dot-ok { width: 6px; height: 6px; border-radius: 50%; background: #00ff88; box-shadow: 0 0 5px #00ff88; }
+  .ai-chat-key-status .dot-off { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; box-shadow: 0 0 5px #f59e0b; }
+
+  .ai-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+  .ai-chat-body::-webkit-scrollbar { width: 6px; }
+  .ai-chat-body::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+  .ai-chat-msg {
+    max-width: 85%;
+    padding: 10px 13px;
+    border-radius: 14px;
+    font-size: 12.8px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    animation: aiMsgIn 0.25s ease both;
+  }
+  @keyframes aiMsgIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ai-chat-msg.bot {
+    align-self: flex-start;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  }
+  .ai-chat-msg.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #3b82f6, #1fbf5f);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 3px 12px -3px rgba(31, 191, 95, 0.45);
+  }
+  .ai-chat-msg.system-note {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.25);
+    color: var(--text-tertiary);
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: left;
+    border-radius: 10px;
+    padding: 9px 11px;
+  }
+  .ai-chat-msg.system-note::before {
+    content: '⚠️';
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+  .ai-chat-typing {
+    align-self: flex-start;
+    display: flex;
+    gap: 4px;
+    padding: 11px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+  }
+  .ai-chat-typing span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text-muted);
+    animation: aiTypingBounce 1.1s infinite ease-in-out;
+  }
+  .ai-chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .ai-chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes aiTypingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  .ai-chat-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 0 14px 10px;
+    flex-shrink: 0;
+  }
+  .ai-chat-chip {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--card-bg-soft);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+  }
+  .ai-chat-chip:hover {
+    border-color: #1fbf5f;
+    color: var(--text-primary);
+    background: rgba(31, 191, 95, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .ai-chat-input-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .ai-chat-input {
+    flex: 1;
+    resize: none;
+    max-height: 90px;
+    background: var(--track-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 13px;
+    font-family: inherit;
+    font-size: 12.8px;
+    line-height: 1.4;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .ai-chat-input::placeholder { color: var(--text-faint); }
+  .ai-chat-input:focus {
+    border-color: #1fbf5f;
+    box-shadow: 0 0 0 3px rgba(31, 191, 95, 0.12);
+  }
+  .ai-chat-send {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #1fbf5f);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 12px -3px rgba(31, 191, 95, 0.5);
+    transition: filter 0.2s, transform 0.2s;
+  }
+  .ai-chat-send:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .ai-chat-send:active { transform: scale(0.93); }
+  .ai-chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  @media (max-width: 460px) {
+    #aiChatPanel {
+      right: 12px;
+      left: 12px;
+      width: auto;
+      bottom: 84px;
+    }
+    #aiChatBubble { right: 16px; bottom: 16px; }
+  }
+
+  /* ===== AI Chat tertanam di dalam card Thunder AI ===== */
+  .ai-embedded-chat {
+    position: relative;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px dashed var(--border-strong);
+  }
+  .ai-embedded-chat-head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 12px;
+  }
+  .ai-embedded-chat-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(31,191,95,0.18));
+    border: 1px solid var(--border-strong);
+  }
+  .ai-embedded-chat-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+  .ai-embedded-chat-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .ai-embedded-chat-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .ai-embedded-chat-body {
+    height: 280px;
+    max-height: 44vh;
+    background: linear-gradient(180deg, var(--card-bg-soft), var(--track-bg) 140%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 13px;
+    margin-bottom: 10px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 16px rgba(0,0,0,0.1);
+  }
+  .ai-embedded-chat-input-row {
+    border-top: none;
+    padding: 0;
+  }
+
 </style>
 </head>
 <body>
@@ -2551,27 +3012,29 @@
     </div>
   </header>
 
-  <div class="affiliate-section">
-    <div class="affiliate-brand">
-      <span class="tf-logo-badge">
-        <span class="tf-logo-fallback">TF</span>
-      </span>
-      <div>
-        <div class="affiliate-title">TradersFamily</div>
-        <div class="affiliate-sub">Aplikasi penyedia signal</div>
+  <div class="affiliate-hover-group">
+    <div class="affiliate-section">
+      <div class="affiliate-brand">
+        <span class="tf-logo-badge">
+          <span class="tf-logo-fallback">TF</span>
+        </span>
+        <div>
+          <div class="affiliate-title">TradersFamily</div>
+          <div class="affiliate-sub">Aplikasi penyedia signal</div>
+        </div>
+      </div>
+      <div class="affiliate-divider"></div>
+      <div class="affiliate-links">
+        <button type="button" class="affiliate-btn btn-signal-cta" style="--tc:#1fbf5f" onclick="openSignalView()">
+          Daftar Copy Signal <span class="btn-arrow">→</span>
+        </button>
       </div>
     </div>
-    <div class="affiliate-divider"></div>
-    <div class="affiliate-links">
-      <button type="button" class="affiliate-btn btn-signal-cta" style="--tc:#1fbf5f" onclick="openSignalView()">
-        Daftar Copy Signal <span class="btn-arrow">→</span>
-      </button>
-    </div>
-  </div>
 
-  <p style="max-width:640px;margin:0 auto 18px;padding:0 16px;text-align:center;font-size:13.5px;line-height:1.6;color:var(--text-tertiary)">
-    Thunder Trade adalah analyzer <strong>trading forex</strong> gratis untuk statement MT4/MT5 — cek win rate, profit factor, dan equity curve akun Anda secara otomatis. Ingin copy signal forex? Daftar lewat partner afiliasi resmi <strong>TradersFamily</strong> di atas.
-  </p>
+    <p class="affiliate-desc">
+      Thunder Trade adalah analyzer <strong>trading forex</strong> gratis untuk statement MT4/MT5 — cek win rate, profit factor, dan equity curve akun Anda secara otomatis. Ingin copy signal forex? Daftar lewat partner afiliasi resmi <strong>TradersFamily</strong> di atas.
+    </p>
+  </div>
 
   <div id="dropzone">
     <div class="icon">⚡</div>
@@ -2744,7 +3207,40 @@
       <div class="section-header">
         <h2 class="section-title">⚡ Thunder AI</h2>
       </div>
-      <div class="ai-insight-section" id="aiInsightSection"></div>
+      <div class="ai-insight-section" id="aiInsightSection">
+        <div id="aiInsightDynamic"></div>
+
+        <!-- ===== Chatbox AI tertanam di dalam card Thunder AI ===== -->
+        <div class="ai-embedded-chat" id="aiEmbeddedChat">
+          <div class="ai-embedded-chat-head">
+            <span class="ai-embedded-chat-icon">💬</span>
+            <span class="ai-embedded-chat-head-text">
+              <span class="ai-embedded-chat-title">Tanya Thunder AI</span>
+              <span class="ai-embedded-chat-sub">Tanya langsung seputar hasil analisa kamu</span>
+            </span>
+            <button class="ai-chat-key-btn" id="aiEmbeddedChatKeyBtn" type="button" aria-label="Atur API Key OpenAI kamu" title="Atur API Key OpenAI kamu" style="margin-left:auto;">🔑</button>
+          </div>
+          <div class="ai-chat-key-panel" id="aiEmbeddedChatKeyPanel">
+            <p>Chat ini pakai API key OpenAI milik kamu sendiri. Key hanya disimpan di browser kamu (tidak dikirim ke siapa pun selain OpenAI). Dapatkan key di <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a>.</p>
+            <div class="ai-chat-key-row">
+              <input type="password" class="ai-chat-key-input" id="aiEmbeddedChatKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
+              <button class="ai-chat-key-save" id="aiEmbeddedChatKeySave" type="button">Simpan</button>
+              <button class="ai-chat-key-clear" id="aiEmbeddedChatKeyClear" type="button">Hapus</button>
+            </div>
+            <div class="ai-chat-key-status" id="aiEmbeddedChatKeyStatus"></div>
+          </div>
+          <div class="ai-chat-body ai-embedded-chat-body" id="aiEmbeddedChatBody"></div>
+          <div class="ai-chat-suggestions" id="aiEmbeddedChatSuggestions">
+            <button class="ai-chat-chip" type="button" data-q="Bagaimana kondisi win rate saya?">Win rate saya?</button>
+            <button class="ai-chat-chip" type="button" data-q="Apa arti profit factor saya dan apakah itu bagus?">Profit factor?</button>
+            <button class="ai-chat-chip" type="button" data-q="Apa yang perlu saya perbaiki dari hasil trading saya?">Apa yang perlu diperbaiki?</button>
+          </div>
+          <div class="ai-chat-input-row ai-embedded-chat-input-row">
+            <textarea id="aiEmbeddedChatInput" class="ai-chat-input" rows="1" placeholder="Tulis pertanyaan seputar hasil analisa..."></textarea>
+            <button id="aiEmbeddedChatSend" class="ai-chat-send" type="button" aria-label="Kirim pesan">➤</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="dashboard-group" id="dgTren" style="--gc:#eab308">
@@ -3377,7 +3873,8 @@ if (eqResetZoomBtn) {
 }
 
 function renderAIInsight(ctx) {
-  const box = document.getElementById('aiInsightSection');
+  window.thunderChatContext = ctx; // dipakai oleh widget Chat AI untuk menjawab pertanyaan
+  const box = document.getElementById('aiInsightDynamic');
   const {
     portfolioScore, scoreLabel, scoreColor,
     winRate, wins, losses, tradeCount,
@@ -4023,5 +4520,368 @@ function sgFallbackCopy(input, cb) {
   }
 })();
 </script>
+<!-- ===== AI Chat Widget ===== -->
+<button id="aiChatBubble" type="button" aria-label="Buka chat AI analisa trading">
+  ⚡<span class="ai-chat-badge"></span>
+</button>
+
+<div id="aiChatPanel" role="dialog" aria-label="Chat AI Thunder Trade">
+  <div class="ai-chat-header">
+    <div class="ai-chat-header-icon">🤖</div>
+    <div class="ai-chat-header-text">
+      <div class="ai-chat-header-title">Tanya AI Thunder Trade</div>
+      <div class="ai-chat-header-sub"><span class="dot-live"></span>Tanya seputar hasil analisa Anda</div>
+    </div>
+    <button class="ai-chat-key-btn" id="aiChatKeyBtn" type="button" aria-label="Atur API Key OpenAI kamu" title="Atur API Key OpenAI kamu">🔑</button>
+    <button class="ai-chat-close" id="aiChatCloseBtn" aria-label="Tutup chat">✕</button>
+  </div>
+  <div class="ai-chat-key-panel" id="aiChatKeyPanel">
+    <p>Chat ini pakai API key OpenAI milik kamu sendiri. Key hanya disimpan di browser kamu (tidak dikirim ke siapa pun selain OpenAI). Dapatkan key di <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a>.</p>
+    <div class="ai-chat-key-row">
+      <input type="password" class="ai-chat-key-input" id="aiChatKeyInput" placeholder="sk-..." autocomplete="off" spellcheck="false">
+      <button class="ai-chat-key-save" id="aiChatKeySave" type="button">Simpan</button>
+      <button class="ai-chat-key-clear" id="aiChatKeyClear" type="button">Hapus</button>
+    </div>
+    <div class="ai-chat-key-status" id="aiChatKeyStatus"></div>
+  </div>
+
+  <div class="ai-chat-body" id="aiChatBody"></div>
+
+  <div class="ai-chat-suggestions" id="aiChatSuggestions">
+    <button class="ai-chat-chip" type="button" data-q="Bagaimana kondisi win rate saya?">Win rate saya?</button>
+    <button class="ai-chat-chip" type="button" data-q="Apa arti profit factor saya dan apakah itu bagus?">Profit factor?</button>
+    <button class="ai-chat-chip" type="button" data-q="Apa yang perlu saya perbaiki dari hasil trading saya?">Apa yang perlu diperbaiki?</button>
+  </div>
+
+  <div class="ai-chat-input-row">
+    <textarea id="aiChatInput" class="ai-chat-input" rows="1" placeholder="Tulis pertanyaan seputar hasil analisa..."></textarea>
+    <button id="aiChatSend" class="ai-chat-send" type="button" aria-label="Kirim pesan">➤</button>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   AI CHAT WIDGET — KONFIGURASI
+   =====================================================================
+   Setiap pengunjung memasukkan API key OpenAI MILIK MEREKA SENDIRI lewat
+   tombol 🔑 di chatbox. Key disimpan di localStorage browser pengguna.
+
+   PENTING soal CORS: OpenAI memblokir request langsung dari browser,
+   apapun key yang dipakai — jadi chatbox ini TIDAK memanggil OpenAI
+   secara langsung, melainkan lewat proxy kecil (Cloudflare Worker).
+   Proxy ini HANYA meneruskan key milik user ke OpenAI untuk request itu
+   saja — tidak menyimpan key siapa pun. Kode & panduan deploy proxy ada
+   di file terpisah "cloudflare-worker.js" (gratis, ±5 menit).
+
+   Setelah proxy jadi, kamu akan dapat URL seperti:
+   https://thunder-trade-ai.<username-kamu>.workers.dev
+   Tempel URL itu ke apiUrl di bawah ini.
+   ===================================================================== */
+  const AI_CHAT_CONFIG = {
+    apiUrl: 'https://thunder-trade-ai.mohyasir45.workers.dev', // URL Cloudflare Worker milik Thunder Trade
+    model: 'gpt-4o-mini',
+    storageKey: 'thunderTradeUserApiKey', // nama key di localStorage browser pengguna
+  };
+/* ===================================================================== */
+
+(function () {
+  function fmtID(n) {
+    if (n === undefined || n === null || isNaN(n)) return '-';
+    return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(n);
+  }
+
+  // ===== Manajemen API key milik pengguna (tersimpan lokal di browser mereka) =====
+  function getUserApiKey() {
+    try { return localStorage.getItem(AI_CHAT_CONFIG.storageKey) || ''; }
+    catch (e) { return ''; }
+  }
+  function setUserApiKey(key) {
+    try {
+      if (key) localStorage.setItem(AI_CHAT_CONFIG.storageKey, key);
+      else localStorage.removeItem(AI_CHAT_CONFIG.storageKey);
+    } catch (e) { /* localStorage tidak tersedia (mode privat, dsb) */ }
+  }
+  function maskKey(key) {
+    if (!key) return '';
+    return key.slice(0, 7) + '••••' + key.slice(-4);
+  }
+
+
+  // Ringkas data hasil analisa trading (window.thunderChatContext, diisi oleh renderAIInsight)
+  // menjadi teks konteks yang dikirim ke AI supaya jawabannya sesuai data pengguna.
+  function buildTradingContextSummary() {
+    const ctx = window.thunderChatContext;
+    if (!ctx) {
+      return 'Pengguna belum meng-upload statement MT4/MT5, jadi belum ada data analisa trading yang tersedia. Jika pengguna bertanya soal hasil trading, minta mereka upload file statement terlebih dahulu di halaman utama.';
+    }
+    return [
+      'Berikut data hasil analisa trading pengguna (statement MT4/MT5 yang sudah di-upload):',
+      `- Portfolio Score: ${ctx.portfolioScore}/100 (${ctx.scoreLabel})`,
+      `- Win Rate: ${ctx.winRate}% (${ctx.wins} menang, ${ctx.losses} kalah dari ${ctx.tradeCount} transaksi)`,
+      `- Profit Factor: ${ctx.pf ? ctx.pf.toFixed(2) : '-'}`,
+      `- Risk:Reward Ratio: ${ctx.rrRatio}`,
+      `- Rata-rata Profit saat Menang: ${fmtID(ctx.avgWinProfit)}`,
+      `- Rata-rata Loss saat Kalah: ${fmtID(ctx.avgLossProfit)}`,
+      `- Max Drawdown: ${fmtID(ctx.maxDD)} (${ctx.ddPercent ? ctx.ddPercent.toFixed(1) : '-'}% dari modal awal)`,
+      `- Recovery Factor: ${ctx.recoveryFactor ? ctx.recoveryFactor.toFixed(2) : '-'}x`,
+      `- Total P/L: ${fmtID(ctx.totalPl)}`,
+      `- Estimasi Risiko Likuidasi: ${ctx.liqRiskScore}/100 (${ctx.riskLabel})`,
+      ctx.currentStreak ? `- Rentetan saat ini: ${ctx.currentStreak.count}x ${ctx.currentStreak.type === 'win' ? 'menang' : 'kalah'} beruntun` : ''
+    ].filter(Boolean).join('\n');
+  }
+
+  function buildSystemPrompt() {
+    return [
+      'Kamu adalah asisten AI di website Thunder Trade, sebuah analyzer trading forex untuk statement MT4/MT5.',
+      'Tugasmu adalah menjawab pertanyaan pengguna seputar HASIL ANALISA TRADING mereka (win rate, profit factor, drawdown, portfolio score, risk:reward, dsb) dengan bahasa Indonesia yang santai, jelas, dan mudah dipahami trader pemula.',
+      'Jawab singkat dan langsung ke inti (maksimal beberapa paragraf pendek atau poin-poin), jangan bertele-tele.',
+      'Jangan memberi saran finansial yang menjanjikan profit pasti — selalu ingatkan bahwa trading forex mengandung risiko.',
+      '',
+      buildTradingContextSummary()
+    ].join('\n');
+  }
+
+  // Factory: membuat satu instance chatbox AI yang terhubung ke elemen DOM tertentu.
+  // Dipakai dua kali: untuk widget mengambang (floating) dan chatbox tertanam di card Thunder AI.
+  function createChatInstance({ body, input, sendBtn, chips, welcomeText, keyBtn, keyPanel, keyInput, keySave, keyClear, keyStatus }) {
+    let history = []; // { role: 'user'|'assistant', content: string }
+    let isSending = false;
+    let greeted = false;
+
+    function addMessage(text, role) {
+      const div = document.createElement('div');
+      div.className = 'ai-chat-msg ' + role;
+      div.textContent = text;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+      return div;
+    }
+
+    function addSystemNote(text) {
+      const div = document.createElement('div');
+      div.className = 'ai-chat-msg system-note';
+      div.textContent = text;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'ai-chat-typing';
+      div.dataset.typingIndicator = 'true';
+      div.innerHTML = '<span></span><span></span><span></span>';
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function hideTyping() {
+      const el = body.querySelector('[data-typing-indicator="true"]');
+      if (el) el.remove();
+    }
+
+    // ===== UI panel pengaturan API key milik pengguna =====
+    function refreshKeyUI() {
+      const key = getUserApiKey();
+      if (keyBtn) keyBtn.classList.toggle('needs-key', !key);
+      if (keyStatus) {
+        keyStatus.innerHTML = key
+          ? '<span class="dot-ok"></span>API key aktif (' + maskKey(key) + ')'
+          : '<span class="dot-off"></span>Belum ada API key tersimpan';
+      }
+    }
+    function openKeyPanel() {
+      if (!keyPanel) return;
+      keyPanel.classList.add('open');
+      const current = getUserApiKey();
+      if (keyInput) keyInput.value = current;
+      refreshKeyUI();
+      if (keyInput) keyInput.focus();
+    }
+    function closeKeyPanel() {
+      if (keyPanel) keyPanel.classList.remove('open');
+    }
+    if (keyBtn) keyBtn.addEventListener('click', () => {
+      if (keyPanel && keyPanel.classList.contains('open')) closeKeyPanel();
+      else openKeyPanel();
+    });
+    if (keySave) keySave.addEventListener('click', () => {
+      const val = (keyInput.value || '').trim();
+      if (!val) { addSystemNote('⚠️ Isi dulu API key kamu sebelum menyimpan.'); return; }
+      if (!val.startsWith('sk-')) { addSystemNote('⚠️ Format API key OpenAI biasanya diawali "sk-". Pastikan key sudah benar.'); }
+      setUserApiKey(val);
+      refreshKeyUI();
+      closeKeyPanel();
+      addSystemNote('✅ API key tersimpan di browser kamu. Sekarang kamu bisa mulai chat.');
+    });
+    if (keyClear) keyClear.addEventListener('click', () => {
+      setUserApiKey('');
+      if (keyInput) keyInput.value = '';
+      refreshKeyUI();
+      addSystemNote('🗑️ API key dihapus dari browser kamu.');
+    });
+
+    async function callAI(userText) {
+      const userKey = getUserApiKey();
+      if (!userKey) {
+        addSystemNote('⚠️ Kamu belum memasukkan API key OpenAI. Klik ikon 🔑 di atas untuk memasukkan API key kamu sendiri.');
+        openKeyPanel();
+        return;
+      }
+      if (!AI_CHAT_CONFIG.apiUrl || AI_CHAT_CONFIG.apiUrl.includes('GANTI-DENGAN-URL-WORKER-KAMU')) {
+        addSystemNote('⚠️ Chat AI belum aktif — admin website belum mengisi URL proxy (Worker) di AI_CHAT_CONFIG. Lihat file cloudflare-worker.js untuk panduan aktivasi.');
+        return;
+      }
+
+      isSending = true;
+      sendBtn.disabled = true;
+      showTyping();
+
+      const messages = [
+        { role: 'system', content: buildSystemPrompt() },
+        ...history,
+        { role: 'user', content: userText }
+      ];
+
+      try {
+        const res = await fetch(AI_CHAT_CONFIG.apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            apiKey: userKey, // API key milik pengguna sendiri, hanya diteruskan oleh proxy ke OpenAI
+            model: AI_CHAT_CONFIG.model,
+            messages: messages,
+            temperature: 0.6,
+            max_tokens: 500
+          })
+        });
+
+        if (!res.ok) {
+          const errText = await res.text().catch(() => '');
+          if (res.status === 401 || res.status === 400) {
+            throw new Error('API key ditolak — kemungkinan key salah/kadaluarsa. Cek lagi lewat tombol 🔑.');
+          }
+          throw new Error('HTTP ' + res.status + (errText ? ' — ' + errText.slice(0, 200) : ''));
+        }
+
+        const data = await res.json();
+        const reply = data && data.choices && data.choices[0] && data.choices[0].message
+          ? data.choices[0].message.content
+          : null;
+
+        hideTyping();
+
+        if (!reply) {
+          addSystemNote('⚠️ Respons dari AI tidak sesuai format yang diharapkan.');
+          return;
+        }
+
+        addMessage(reply, 'bot');
+        history.push({ role: 'user', content: userText });
+        history.push({ role: 'assistant', content: reply });
+
+      } catch (err) {
+        hideTyping();
+        const isNetworkError = err instanceof TypeError; // biasanya berarti URL proxy salah/mati atau masalah koneksi
+        const msg = isNetworkError
+          ? '⚠️ Gagal menghubungi server AI. Kemungkinan URL proxy di AI_CHAT_CONFIG belum benar atau Worker belum di-deploy. Cek console browser (F12) untuk detail.'
+          : '⚠️ Gagal menghubungi AI: ' + err.message;
+        addSystemNote(msg);
+      } finally {
+        isSending = false;
+        sendBtn.disabled = false;
+      }
+    }
+
+    function handleSend(text) {
+      const trimmed = (text !== undefined ? text : input.value).trim();
+      if (!trimmed || isSending) return;
+      addMessage(trimmed, 'user');
+      input.value = '';
+      input.style.height = 'auto';
+      callAI(trimmed);
+    }
+
+    function greet() {
+      if (greeted) return;
+      greeted = true;
+      addMessage(welcomeText, 'bot');
+      refreshKeyUI();
+      if (!getUserApiKey()) {
+        addSystemNote('🔑 Chat ini pakai API key OpenAI milik kamu sendiri. Klik ikon 🔑 di atas untuk memasukkannya (tersimpan aman hanya di browser kamu).');
+      }
+    }
+
+    sendBtn.addEventListener('click', () => handleSend());
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    input.addEventListener('input', () => {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 90) + 'px';
+    });
+    (chips || []).forEach(chip => {
+      chip.addEventListener('click', () => handleSend(chip.getAttribute('data-q')));
+    });
+
+    refreshKeyUI();
+    return { greet };
+  }
+
+  // ===== Instance 1: widget mengambang (bubble di pojok kanan bawah) =====
+  const bubble = document.getElementById('aiChatBubble');
+  const panel = document.getElementById('aiChatPanel');
+  const closeBtn = document.getElementById('aiChatCloseBtn');
+  const floatingChat = createChatInstance({
+    body: document.getElementById('aiChatBody'),
+    input: document.getElementById('aiChatInput'),
+    sendBtn: document.getElementById('aiChatSend'),
+    chips: document.querySelectorAll('#aiChatSuggestions .ai-chat-chip'),
+    welcomeText: 'Halo! 👋 Saya asisten AI Thunder Trade. Saya bisa bantu jelaskan hasil analisa trading kamu — win rate, profit factor, drawdown, portfolio score, dan lainnya. Silakan tanya apa saja, atau pilih salah satu topik cepat di bawah.',
+    keyBtn: document.getElementById('aiChatKeyBtn'),
+    keyPanel: document.getElementById('aiChatKeyPanel'),
+    keyInput: document.getElementById('aiChatKeyInput'),
+    keySave: document.getElementById('aiChatKeySave'),
+    keyClear: document.getElementById('aiChatKeyClear'),
+    keyStatus: document.getElementById('aiChatKeyStatus')
+  });
+
+  function openPanel() {
+    panel.classList.add('open');
+    bubble.classList.remove('has-unread');
+    floatingChat.greet();
+    setTimeout(() => document.getElementById('aiChatInput').focus(), 200);
+  }
+  function closePanel() {
+    panel.classList.remove('open');
+  }
+  bubble.addEventListener('click', () => {
+    if (panel.classList.contains('open')) closePanel();
+    else openPanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  // ===== Instance 2: chatbox tertanam di dalam card "Thunder AI" =====
+  const embeddedChat = createChatInstance({
+    body: document.getElementById('aiEmbeddedChatBody'),
+    input: document.getElementById('aiEmbeddedChatInput'),
+    sendBtn: document.getElementById('aiEmbeddedChatSend'),
+    chips: document.querySelectorAll('#aiEmbeddedChatSuggestions .ai-chat-chip'),
+    welcomeText: 'Halo! 👋 Tanya apa saja soal hasil analisa trading kamu di sini — win rate, profit factor, drawdown, sampai saran perbaikan.',
+    keyBtn: document.getElementById('aiEmbeddedChatKeyBtn'),
+    keyPanel: document.getElementById('aiEmbeddedChatKeyPanel'),
+    keyInput: document.getElementById('aiEmbeddedChatKeyInput'),
+    keySave: document.getElementById('aiEmbeddedChatKeySave'),
+    keyClear: document.getElementById('aiEmbeddedChatKeyClear'),
+    keyStatus: document.getElementById('aiEmbeddedChatKeyStatus')
+  });
+  embeddedChat.greet(); // langsung sapa karena chatbox ini selalu terlihat di dalam card
+})();
+</script>
+
 </body>
 </html>
