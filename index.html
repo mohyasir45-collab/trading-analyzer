@@ -4984,6 +4984,11 @@ function sgFallbackCopy(input, cb) {
       model: 'llama-3.3-70b-versatile',
       keyHint: 'gsk_...',
       keyLink: 'https://console.groq.com/keys',
+      // Kalau pengguna belum isi key sendiri untuk provider ini, Worker
+      // (cloudflare-worker.js) otomatis pakai key default milik admin
+      // (secret GROQ_API_KEY di Cloudflare). Jadi provider ini TIDAK
+      // wajib diisi key oleh pengguna supaya chat tetap bisa jalan.
+      hasServerDefault: true,
     },
     {
       id: 'openrouter',
@@ -5030,9 +5035,15 @@ function sgFallbackCopy(input, cb) {
       else localStorage.removeItem(k);
     } catch (e) { /* localStorage tidak tersedia (mode privat, dsb) */ }
   }
-  // Provider yang sudah diisi key-nya, diurutkan sesuai prioritas AI_PROVIDERS
+  // Provider yang siap dipakai: sudah diisi key sendiri oleh pengguna,
+  // ATAU punya fallback key default di server (hasServerDefault) sehingga
+  // tidak wajib diisi. Diurutkan sesuai prioritas AI_PROVIDERS.
+  // Provider dengan key milik pengguna sendiri diprioritaskan lebih dulu
+  // (worker.js juga sudah mengutamakan key pengguna kalau dikirim).
   function getConfiguredProviders() {
-    return AI_PROVIDERS.filter(p => !!getProviderKey(p.id));
+    const withOwnKey = AI_PROVIDERS.filter(p => !!getProviderKey(p.id));
+    const withServerDefault = AI_PROVIDERS.filter(p => !getProviderKey(p.id) && p.hasServerDefault);
+    return [...withOwnKey, ...withServerDefault];
   }
   function maskKey(key) {
     if (!key) return '';
